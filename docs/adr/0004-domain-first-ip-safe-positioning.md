@@ -1,0 +1,5 @@
+# Positioning: domain depth + engineering excellence, IP-safe
+
+Primary audience is **engineers**; recruiters convert from the same evidence (secondary). The site leads with Vaishnav's rare combination: **motor-insurance domain depth** (Contract/Claims/Document platform engineering; led a 5-person document team in career years 2–3) and **market-data platform engineering** at NielsenIQ/GfK (POS data pipelines, pricing insights, GitOps release automation).
+
+Corporate work appears only as **IP-safe case studies marketing the approach, design, and code quality** — never literal solutions, proprietary data, or client specifics. Tradeoff analysis outranks code dumps; quantified outcomes appear only where publishable. Research basis: backend portfolios sell decisions, architecture, and outcomes — "you need a document, not a running server."

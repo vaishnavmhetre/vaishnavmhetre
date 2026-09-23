@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Pre-commit guard: blocks commits that stage content matching proprietary patterns
+# (corporate emails, internal hostnames, internal repo/product codenames).
+#
+# WHY THIS EXISTS: this repo is PUBLIC. Corporate data must never be committed.
+#
+# The pattern list is NOT stored in this repo — it is itself proprietary. It lives
+# in the private research vault (~/portfolio-intel/guard/proprietary-patterns.txt),
+# which is pushed to a PRIVATE repo in the corporate account.
+#
+# Override the vault location with GUARD_PATTERNS=<path> if the vault lives elsewhere.
+#
+# If the patterns file is missing this hook FAILS CLOSED (blocks the commit) with
+# instructions — the silent failure mode is committing a leak.
+#
+# Deliberate bypass (only when you are SURE the match is a false positive):
+#   git commit --no-verify ...
+set -u
+
+VAULT_PATTERNS="${GUARD_PATTERNS:-$HOME/portfolio-intel/guard/proprietary-patterns.txt}"
+
+if [[ ! -f "$VAULT_PATTERNS" ]]; then
+  echo "=======================================================" >&2
+  echo "GUARD: proprietary-token list not found at:" >&2
+  echo "  $VAULT_PATTERNS" >&2
+  echo "Refusing to commit to a PUBLIC repo without the guard." >&2
+  echo "Clone/restore the private research vault (~/portfolio-intel/)" >&2
+  echo "or set GUARD_PATTERNS=<path> to point at the token list." >&2
+  echo "=======================================================" >&2
+  exit 1
+fi
+
+# Staged file names (added/copied/modified). Renames/deletions can't leak content.
+STAGED=$(git diff --cached --name-only --diff-filter=ACM)
+
+if [[ -z "$STAGED" ]]; then
+  exit 0
+fi
+
+# Content scan. Parse only real patterns (skip blank lines and # comments),
+# ignore binary files (grep would hang on them).
+HITS=$(printf '%s\n' "$STAGED" | while IFS= read -r f; do
+  if [[ -f "$f" ]]; then
+    grep -vE '^\s*(#.*)?$' "$VAULT_PATTERNS" | grep -nHFf - "$f" 2>/dev/null | sed "s#^#$f:    #"
+  fi
+done)
+
+if [[ -n "$HITS" ]]; then
+  echo "=======================================================" >&2
+  echo "GUARD: proprietary content detected in staged files." >&2
+  echo "This repo is PUBLIC — refusing to commit." >&2
+  echo "Move the data into the private research vault" >&2
+  echo "(~/portfolio-intel/) instead." >&2
+  echo "-------------------------------------------------------" >&2
+  echo "$HITS" | head -40 >&2
+  echo "=======================================================" >&2
+  exit 1
+fi
+
+exit 0

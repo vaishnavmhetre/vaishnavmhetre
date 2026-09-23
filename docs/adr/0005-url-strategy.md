@@ -1,0 +1,3 @@
+# URL strategy: free subdomain now, custom domain later
+
+v1 serves at `vaishnavmhetre.github.io` from the username repo. Configuration is **base-URL-aware from the first commit**: Hugo `baseURL` + relative-path discipline, no hardcoded absolute URLs in content. A custom domain (`vaishnavmhetre.dev`) is in scope later and must remain a one-line `baseURL` + DNS change. Paying for a domain now buys nothing the site needs at launch.

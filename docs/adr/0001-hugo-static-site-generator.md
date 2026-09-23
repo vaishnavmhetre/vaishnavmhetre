@@ -1,0 +1,5 @@
+# Hugo as the static site generator
+
+The portfolio+blog must build free in GitHub Actions, prioritize Markdown-first authoring, and survive years of low-touch maintenance by a Java/Python author with no appetite for frontend-framework churn. We chose **Hugo** over Astro, Eleventy, Jekyll, and Next.js static export because it bundles the blog primitives we need (tag taxonomies, RSS, Chroma syntax highlighting, pagination) with zero assembly, builds in seconds on a runner, deploys via the official `upload-pages-artifact`/`deploy-pages` workflow, and is a single pinned binary with no Node/Ruby toolchain drift.
+
+Astro remains the migration path if interactive client-side islands ever become a requirement (both are Markdown-at-the-core, so migration stays cheap). Jekyll's default-Pages path was rejected (frozen Jekyll 3.10, Ruby toolchain); Next.js static export was rejected (no blog primitives, heaviest published JS, static-export feature restrictions).
