@@ -1,0 +1,5 @@
+# Local agent session state (not source)
+.omo/
+
+# OS cruft
+.DS_Store
