@@ -1,20 +1,22 @@
-{{- /* Reusable case-study card: title, summary, tags, CTA. Styles ship with the T5 landing; T6 promotes tokens. */ -}}
-<article class="case-study-card">
-    <span class="case-study-label">Case study</span>
+{{- /* Long Document entry for the editorial homepage: ordinal numeral
+       ("No. 01" — CSS counter on the parent <ol>, list semantics carry
+       order for AT), serif title, summary, tracked meta tags, typographic
+       CTA. Styles ship in assets/css/extended/custom.css. */ -}}
+<li class="doc-entry">
     <header class="entry-header">
-        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <h3 class="doc-entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
     </header>
     {{- with .Summary }}
-    <p class="case-study-summary">{{ . | plainify | htmlUnescape }}</p>
+    <p class="doc-entry-summary">{{ . | plainify | htmlUnescape }}</p>
     {{- end }}
     {{- with .Params.tags }}
-    <ul class="case-study-tags">
+    <ul class="doc-entry-tags">
         {{- range . }}
         <li><a href="{{ printf "tags/%s/" (. | urlize) | relURL }}">{{ . }}</a></li>
         {{- end }}
     </ul>
     {{- end }}
-    <footer class="case-study-footer">
-        <a class="case-study-cta" href="{{ .RelPermalink }}">Read the case study <span aria-hidden="true">→</span></a>
+    <footer class="doc-entry-footer">
+        <a class="doc-entry-cta" href="{{ .RelPermalink }}">Read the case study <span aria-hidden="true">→</span></a>
     </footer>
-</article>
+</li>

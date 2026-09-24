@@ -1,3 +1,10 @@
+{{- /* Editorial type pairing: Fraunces (display) + Newsreader (body).
+       Preconnect + display=swap; weights: Fraunces 400/700,
+       Newsreader 400/600 — two families, two weights each. */ -}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap">
 {{ $gc := site.Params.goatcounter }}
 {{- if and $gc.enabled (ne hugo.Environment "development") $gc.code }}
 <script data-goatcounter="https://{{ $gc.code }}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

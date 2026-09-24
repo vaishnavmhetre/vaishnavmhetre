@@ -1,6 +1,6 @@
 {{ define "main" }}
 <script>
-    /* Scroll-reveal bootstrap: runs before first paint so cards are
+    /* Scroll-reveal bootstrap: runs before first paint so entries are
        hidden pre-paint (no flash). Adds .motion-reveal ONLY when the
        user allows motion and IO exists — otherwise content stays
        fully visible and static. */
@@ -17,272 +17,62 @@
                     }
                 }
             }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
-            var els = document.querySelectorAll(".landing-cards .case-study-card, .landing .post-entry");
+            var els = document.querySelectorAll(".doc-entries .doc-entry, .doc-posts .post-entry");
             for (var j = 0; j < els.length; j++) io.observe(els[j]);
         });
     })();
 </script>
-<style>
-    /* T5 landing; T6 will promote tokens */
-    .landing-hero {
-        padding: calc(var(--gap) * 1.5) 0 var(--gap);
-        margin-bottom: calc(var(--gap) * 2);
-        border-bottom: 1px solid var(--border);
-    }
 
-    .landing-hero h1 {
-        font-size: clamp(28px, 4.5vw, 36px);
-        letter-spacing: -0.015em;
-        margin-bottom: 0.6rem;
-    }
-
-    .landing-lede {
-        font-size: 18px;
-        line-height: 1.55;
-        color: var(--content);
-        max-width: 58ch;
-        margin-bottom: 0.9rem;
-    }
-
-    .landing-frame {
-        font-size: 14px;
-        line-height: 1.6;
-        color: var(--secondary);
-        max-width: 58ch;
-        padding-left: 0.8rem;
-        border-left: 2px solid var(--tertiary);
-        margin-bottom: 1rem;
-    }
-
-    .landing-frame a {
-        color: var(--primary);
-        text-decoration: underline;
-        text-underline-offset: 0.2rem;
-    }
-
-    .landing-hero .social-icons a:first-of-type {
-        padding-inline-start: 0;
-    }
-
-    .landing-section {
-        margin-bottom: calc(var(--gap) * 2);
-    }
-
-    .landing-section-head {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: var(--content-gap);
-        border-bottom: 1px solid var(--border);
-        padding-bottom: 0.55rem;
-        margin-bottom: var(--gap);
-    }
-
-    .landing-section-head h2 {
-        font-size: 13px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--secondary);
-    }
-
-    .landing-more {
-        font-size: 14px;
-        color: var(--secondary);
-        text-decoration: underline;
-        text-underline-offset: 0.2rem;
-        white-space: nowrap;
-    }
-
-    .landing-more:hover {
-        color: var(--primary);
-    }
-
-    .landing-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-        gap: var(--gap);
-    }
-
-    .case-study-card {
-        display: flex;
-        flex-direction: column;
-        gap: 0.6rem;
-        padding: var(--gap);
-        background: var(--entry);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        transition: border-color 0.2s ease;
-    }
-
-    .case-study-card:hover,
-    .case-study-card:focus-within {
-        border-color: var(--tertiary);
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-        .case-study-card {
-            transition:
-                border-color var(--dur-fast) ease,
-                transform var(--dur-base) var(--ease-out),
-                box-shadow var(--dur-base) var(--ease-out);
-        }
-
-        .case-study-card:hover,
-        .case-study-card:focus-within {
-            transform: translateY(-3px);
-            box-shadow: var(--lift-shadow);
-        }
-
-        .case-study-tags a {
-            transition:
-                color var(--dur-fast) ease,
-                border-color var(--dur-fast) ease;
-        }
-
-        .case-study-tags a:hover,
-        .case-study-tags a:focus-visible {
-            color: var(--primary);
-            border-color: var(--tertiary);
-        }
-
-        .case-study-cta span {
-            display: inline-block;
-            transition: transform var(--dur-base) var(--ease-out);
-        }
-
-        .case-study-card:hover .case-study-cta span,
-        .case-study-card:focus-within .case-study-cta span {
-            transform: translateX(3px);
-        }
-
-        .landing-more {
-            transition: color var(--dur-fast) ease;
-        }
-
-        .landing-more:hover,
-        .landing-more:focus-visible {
-            color: var(--primary);
-        }
-    }
-
-    .case-study-label {
-        font-size: 11px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        color: var(--secondary);
-    }
-
-    .case-study-card .entry-header h3 {
-        font-size: 1.25rem;
-        line-height: 1.3;
-    }
-
-    .case-study-card .entry-header h3 a:hover {
-        text-decoration: underline;
-        text-underline-offset: 0.2rem;
-    }
-
-    .case-study-summary {
-        font-size: 14px;
-        line-height: 1.6;
-        color: var(--secondary);
-        margin: 0;
-        flex: 1;
-    }
-
-    .case-study-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    .case-study-tags a {
-        display: inline-block;
-        font-size: 12px;
-        color: var(--secondary);
-        border: 1px solid var(--border);
-        border-radius: 999px;
-        padding: 0.1rem 0.55rem;
-    }
-
-    .case-study-tags a:hover {
-        color: var(--primary);
-        border-color: var(--tertiary);
-    }
-
-    .case-study-cta {
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--primary);
-        text-decoration: underline;
-        text-underline-offset: 0.25rem;
-    }
-
-    .landing .post-entry .entry-header h3 {
-        font-size: 1.3rem;
-        line-height: 1.3;
-    }
-
-    .landing a:focus-visible {
-        outline: 2px solid var(--secondary);
-        outline-offset: 2px;
-        border-radius: 2px;
-    }
-</style>
-
-<div class="landing">
-    <header class="landing-hero">
-        <h1>{{ site.Title }}</h1>
-        <p class="landing-lede">Motor-insurance and market-data platform engineer — event-driven systems,
+{{- /* Long Document macrostructure: the homepage is literature about
+       the work — a prose masthead on a double rule, numbered case-study
+       entries in an ordered list, writing entries as continued prose.
+       All layout CSS lives in assets/css/extended/custom.css. */ -}}
+<div class="doc">
+    <header class="doc-mast">
+        <h1 class="doc-title">{{ site.Title }}</h1>
+        <p class="doc-lede">Motor-insurance and market-data platform engineer — event-driven systems,
             microservices, and document engineering.</p>
-        <p class="landing-frame">This portfolio is <a href="{{ "about/" | relURL }}">the frame</a>, not the
+        <p class="doc-frame">This portfolio is <a href="{{ "about/" | relURL }}">the frame</a>, not the
             painting — a short story of the work, pointing outward at the code and the career behind it.</p>
         {{ partial "social_icons.html" (dict "align" "") }}
     </header>
 
-    <section class="landing-section" aria-labelledby="landing-cases-heading">
-        <div class="landing-section-head">
-            <h2 id="landing-cases-heading">Case studies</h2>
-            <a class="landing-more" href="{{ "case-studies/" | relURL }}">All case studies</a>
-        </div>
-        <div class="landing-cards">
+    <section class="doc-section" aria-labelledby="landing-cases-heading">
+        <h2 class="doc-head" id="landing-cases-heading">Case studies</h2>
+        <ol class="doc-entries">
             {{- $caseStudies := where site.RegularPages "Section" "case-studies" }}
             {{- range first 3 $caseStudies.ByDate.Reverse }}
             {{- partial "case-study-card.html" . }}
             {{- end }}
-        </div>
+        </ol>
+        <p class="doc-more"><a class="doc-more-link" href="{{ "case-studies/" | relURL }}">All case studies</a></p>
     </section>
 
     {{- $posts := where site.RegularPages "Section" "posts" }}
     {{- if $posts }}
-    <section class="landing-section" aria-labelledby="landing-writing-heading">
-        <div class="landing-section-head">
-            <h2 id="landing-writing-heading">Writing</h2>
-            <a class="landing-more" href="{{ "posts/" | relURL }}">Blog</a>
+    <section class="doc-section" aria-labelledby="landing-writing-heading">
+        <h2 class="doc-head" id="landing-writing-heading">Writing</h2>
+        <div class="doc-posts">
+            {{- range first 3 $posts.ByDate.Reverse }}
+            <article class="post-entry">
+                <header class="entry-header">
+                    <h3 class="entry-hint-parent doc-post-title">{{ .Title }}</h3>
+                </header>
+                {{- if (ne (.Param "hideSummary") true) }}
+                <div class="entry-content">
+                    <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}…{{ end }}</p>
+                </div>
+                {{- end }}
+                {{- if not (.Param "hideMeta") }}
+                <footer class="entry-footer">
+                    {{ partial "post_meta.html" . -}}
+                </footer>
+                {{- end }}
+                <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .RelPermalink }}"></a>
+            </article>
+            {{- end }}
         </div>
-        {{- range first 3 $posts.ByDate.Reverse }}
-        <article class="post-entry">
-            <header class="entry-header">
-                <h3 class="entry-hint-parent">{{ .Title }}</h3>
-            </header>
-            {{- if (ne (.Param "hideSummary") true) }}
-            <div class="entry-content">
-                <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
-            </div>
-            {{- end }}
-            {{- if not (.Param "hideMeta") }}
-            <footer class="entry-footer">
-                {{ partial "post_meta.html" . -}}
-            </footer>
-            {{- end }}
-            <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .RelPermalink }}"></a>
-        </article>
-        {{- end }}
+        <p class="doc-more"><a class="doc-more-link" href="{{ "posts/" | relURL }}">Blog</a></p>
     </section>
     {{- end }}
 </div>
