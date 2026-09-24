@@ -32,7 +32,7 @@ params:
     enabled: false
     code: ""
   homeMode: "home-info"
-  designDirection: "polished"
+  designDirection: "animation-forward"
   homeInfoParams:
     Title: "Vaishnav Mhetre"
     Content: "Motor-insurance + market-data platform engineer. I design event-driven systems, microservices, and binary data delivery, and I write about [data delivery] and [building this site]."
