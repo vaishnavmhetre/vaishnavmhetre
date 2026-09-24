@@ -1,5 +1,6 @@
 {{ define "main" }}
-{{- /* Dark burnt-orange story — recreation of the Dribbble reference for
+{{- /* Dark burnt-orange story — plus a warm-ivory light theme via
+       html[data-theme="light"] — recreation of the Dribbble reference for
        Vaishnav Mhetre's real content. Sticky 3-zone header, left-aligned
        hero with profile card, light/dark stat duo, dual CTA, CSS marquee,
        then Work / Experience / Skills / About / Contact. All styling and
@@ -23,9 +24,15 @@
                 <a href="#contact">Contact</a>
             </nav>
 
+            <button type="button" class="vm-theme-toggle" aria-label="Switch to light or dark theme">
+                <span class="vm-toggle-icon vm-toggle-sun" aria-hidden="true">☀︎</span>
+                <span class="vm-toggle-icon vm-toggle-moon" aria-hidden="true">☾︎</span>
+            </button>
+
             <a class="vm-topbar-cta" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
 
-            {{- /* CSS-only mobile disclosure — no JavaScript on the page. */ -}}
+            {{- /* CSS-only mobile disclosure (no JS). Theme toggle above is
+                   the sole scripted exception, driven from extend_head.html. */ -}}
             <details class="vm-navmenu">
                 <summary aria-label="Open menu"><span class="vm-burger" aria-hidden="true"></span></summary>
                 <nav class="vm-navmenu-panel" aria-label="Primary mobile">

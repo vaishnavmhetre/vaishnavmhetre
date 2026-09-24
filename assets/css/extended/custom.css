@@ -3,7 +3,8 @@
  * Name: "Dark burnt-orange story" — recreation of the Dribbble reference
  *       (shot 1, "Developer Portfolio Website") adapted for Vaishnav Mhetre.
  *
- * Palette (dark-warm, single theme):
+ * Palette (dark-warm default + warm-ivory light theme; the light/dark
+ *   glass-card "duo" stays dark in both themes):
  *   - Hero gradient: #CE651B 0% → #9A430E 35% → #3A1A0B 65% → #140B06 100%
  *   - Cream primary text #FFF7ED · muted peach #E9C6A2 @ 70%
  *   - Accent orange #FF7A18 · pale peach italic #FFD8A8
@@ -38,6 +39,8 @@
  *     page exists). Rendered as in-page sticky bar on the home shell;
  *     PaperMod's site header/footer are hidden only on home via :has().
  *   - Mobile menu is a CSS-only <details> disclosure (no JavaScript).
+ *   - Theme toggle: light/dark via PaperMod's data-theme attr + one small
+ *     delegated script in extend_head.html (the only JS on the site).
  *   - Ambiguity call: reference "Experience" content below the fold was
  *     never shown — built as two rule-separated entries from about.md
  *     (NielsenIQ, Allianz Technology) in the same card/section system.
@@ -112,9 +115,109 @@
     --accent: var(--vm-accent);
     --focus-ring: var(--vm-accent);
 
+    /* THEME SEMANTICS — dark is the default palette. The page-level
+       tokens below flip under html[data-theme="light"]; the vm-card-*
+       tokens are surface-scoped and intentionally DO NOT flip (espresso
+       glass cards stay dark in both themes — the light/dark "duo"). */
+    --vm-page-bg: var(--vm-espresso);
+    --vm-footer-bg: var(--vm-near-black);
+    --vm-footer-muted: var(--vm-muted-70);
+    --vm-eyebrow-hero: rgba(255, 220, 180, 0.85);
+    --vm-ghost-hover-bg: rgba(255, 251, 243, 0.1);
+    --vm-arrow-circle-bg: rgba(28, 14, 6, 0.12);
+    --vm-card-ink: var(--vm-cream);
+    --vm-card-body: var(--vm-body-text);
+    --vm-card-muted: var(--vm-muted-70);
+    --vm-card-muted-2: var(--vm-muted-80);
+    --vm-card-eyebrow: var(--vm-eyebrow);
+    --vm-card-accent: var(--vm-peach-italic);
+    --vm-card-line-soft: var(--vm-line-soft);
+    --vm-card-line-strong: var(--vm-line-strong);
+    --vm-card-line-hair: var(--vm-line-hair);
+
     /* Shadows */
     --vm-shadow-card: 0 20px 60px rgba(0, 0, 0, 0.5);
     --vm-shadow-btn: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================================
+   LIGHT THEME — warm ivory page, espresso ink, burnt-orange
+   accents. Dark glass cards (profile, stat--dark, cases, exp,
+   menu panel, badges) stay dark in both themes; only the
+   page-level surfaces flip. PaperMod's #theme-toggle sets
+   html[data-theme] (localStorage "pref-theme") — this block
+   re-themes the page-level tokens when it's light.
+   ============================================================ */
+html[data-theme="light"] {
+    --vm-page-bg: #F4E9DA;
+    --vm-footer-bg: #EDDFC9;
+    --vm-footer-muted: #6E4A2E;
+
+    --vm-cream: #241005;
+    --vm-cream-soft: #4A301B;
+    --vm-body-text: rgba(42, 21, 8, 0.72);
+    --vm-nav-text: rgba(42, 21, 8, 0.78);
+    --vm-muted-70: rgba(94, 62, 36, 0.7);
+    --vm-muted-80: rgba(94, 62, 36, 0.8);
+    --vm-eyebrow: #9E520F;
+    --vm-eyebrow-hero: #9E520F;
+    --vm-peach-italic: #B04C0C;
+    --vm-ghost-hover-bg: rgba(42, 21, 8, 0.07);
+    --vm-arrow-circle-bg: rgba(255, 247, 237, 0.18);
+
+    --vm-line: rgba(42, 21, 8, 0.16);
+    --vm-line-strong: rgba(42, 21, 8, 0.24);
+    --vm-line-soft: rgba(42, 21, 8, 0.14);
+    --vm-line-hair: rgba(42, 21, 8, 0.08);
+
+    --vm-header-bg: rgba(255, 250, 242, 0.78);
+
+    --vm-cta-solid-bg: #241005;
+    --vm-cta-solid-ink: #FFF7ED;
+    --vm-cta-solid-hover: #3A1A0B;
+
+    --vm-grad-hero: linear-gradient(180deg,
+            #F9E3C6 0%,
+            #F1D5AF 38%,
+            #F4E6D0 70%,
+            #F4E9DA 100%);
+    --vm-glow: rgba(255, 122, 24, 0.16);
+
+    --vm-marquee-bg: rgba(237, 223, 201, 0.6);
+    --vm-marquee-text: #6E4A2E;
+
+    --vm-shadow-card: 0 20px 60px rgba(90, 50, 20, 0.16);
+    --vm-shadow-btn: 0 4px 14px rgba(90, 50, 20, 0.14);
+
+    /* PaperMod aliases — deep burnt-orange links keep AA on ivory */
+    --theme: var(--vm-page-bg);
+    --content: var(--vm-cream);
+    --primary: var(--vm-cream);
+    --secondary: #6E4A2E;
+    --border: var(--vm-line);
+    --accent: #B04C0C;
+    --focus-ring: #B04C0C;
+}
+
+/* Mirrors the light block: PaperMod scopes its palette (incl. --theme:
+   #1D1E20 gray) under :root[data-theme="dark"] — specificity (0,2,0),
+   which outranks a bare :root AND html[data-theme="dark"]. Re-assert
+   the espresso defaults in the same scope (same specificity, later in
+   the merged stylesheet) or PaperMod's gray leaks into body/content
+   surfaces in dark mode. */
+:root[data-theme="dark"] {
+    --theme: var(--vm-espresso);
+    --content: var(--vm-cream);
+    --primary: var(--vm-cream);
+    --secondary: var(--vm-muted-peach);
+    --border: var(--vm-line);
+    --accent: var(--vm-accent);
+    --focus-ring: var(--vm-accent);
+}
+
+:root[data-theme="dark"] body,
+:root[data-theme="light"] body {
+    background: var(--vm-page-bg);
 }
 
 /* ============================================================
@@ -190,7 +293,7 @@ html {
 
 body {
     overflow-x: clip;
-    background: var(--vm-espresso);
+    background: var(--vm-page-bg);
     color: var(--vm-cream);
     -webkit-font-smoothing: antialiased;
 }
@@ -456,7 +559,7 @@ body:has(.vm-shell) #content {
 }
 
 .vm-hero-left .vm-eyebrow {
-    color: rgba(255, 220, 180, 0.85);
+    color: var(--vm-eyebrow-hero);
 }
 
 /* H1 + serif-italic accent word (signature moment 1) */
@@ -560,18 +663,18 @@ body:has(.vm-shell) #content {
 
 .vm-stat--dark {
     background: var(--vm-card-dark);
-    border: 1px solid var(--vm-line-soft);
+    border: 1px solid var(--vm-card-line-soft);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    color: var(--vm-cream);
+    color: var(--vm-card-ink);
 }
 
 .vm-stat--dark .vm-stat-label {
-    color: var(--vm-muted-70);
+    color: var(--vm-card-muted);
 }
 
 .vm-stat--dark .vm-stat-num {
-    color: var(--vm-cream);
+    color: var(--vm-card-ink);
 }
 
 /* Dual CTA (signature moment 4) */
@@ -617,7 +720,7 @@ body:has(.vm-shell) #content {
     width: 18px;
     height: 18px;
     border-radius: var(--vm-radius-pill);
-    background: rgba(28, 14, 6, 0.12);
+    background: var(--vm-arrow-circle-bg);
     font-size: 10px;
     line-height: 1;
     flex: none;
@@ -637,7 +740,7 @@ body:has(.vm-shell) #content {
     gap: var(--vm-space-3);
     padding: var(--vm-space-3);
     background: var(--vm-card-dark);
-    border: 1px solid var(--vm-line-soft);
+    border: 1px solid var(--vm-card-line-soft);
     border-radius: var(--vm-radius-card-lg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -654,10 +757,10 @@ body:has(.vm-shell) #content {
     padding: 6px 10px;
     border-radius: var(--vm-radius-pill);
     background: var(--vm-btn-dark);
-    border: 1px solid var(--vm-line-hair);
+    border: 1px solid var(--vm-card-line-hair);
     font-size: var(--vm-text-2xs);
     font-weight: 500;
-    color: var(--vm-cream-soft);
+    color: var(--vm-card-ink);
 }
 
 .vm-badge-star {
@@ -696,7 +799,7 @@ body:has(.vm-shell) #content {
     font-size: clamp(3rem, 6vw, 4rem);
     font-weight: 800;
     letter-spacing: -0.04em;
-    color: var(--vm-cream);
+    color: var(--vm-card-ink);
     text-shadow: 0 2px 18px rgba(18, 9, 4, 0.45);
 }
 
@@ -704,14 +807,14 @@ body:has(.vm-shell) #content {
     margin: 0;
     font-size: var(--vm-text-sm);
     font-weight: 600;
-    color: var(--vm-cream);
+    color: var(--vm-card-ink);
 }
 
 .vm-profile-role {
     margin: 0;
     font-size: var(--vm-text-2xs);
     line-height: var(--vm-leading-snug);
-    color: var(--vm-muted-70);
+    color: var(--vm-card-muted);
 }
 
 /* Social row — circular outline icons */
@@ -737,6 +840,20 @@ body:has(.vm-shell) #content {
     background: transparent;
 }
 
+/* Socials sit on TWO surfaces: the dark profile card (desktop, sticky)
+   and the footer (which flips light). The .vm-profile scope pins the
+   dark-card palette so it cannot inherit the light page text colors. */
+.vm-profile .vm-socials a {
+    color: var(--vm-card-ink);
+    border-color: var(--vm-card-line-strong);
+}
+
+.vm-profile .vm-socials a:hover,
+.vm-profile .vm-socials a:focus-visible {
+    color: var(--vm-card-accent);
+    border-color: var(--vm-accent);
+}
+
 .vm-socials svg {
     width: 13px;
     height: 13px;
@@ -752,8 +869,8 @@ body:has(.vm-shell) #content {
     padding: 10px 14px;
     border-radius: var(--vm-radius-pill);
     background: var(--vm-btn-dark);
-    border: 1px solid var(--vm-line-hair);
-    color: var(--vm-cream);
+    border: 1px solid var(--vm-card-line-hair);
+    color: var(--vm-card-ink);
     font-size: var(--vm-text-xs);
     font-weight: 600;
     text-decoration: none;
@@ -901,7 +1018,7 @@ body:has(.vm-shell) #content {
     min-width: 0;
     padding: var(--vm-space-5);
     background: var(--vm-card-dark);
-    border: 1px solid var(--vm-line-soft);
+    border: 1px solid var(--vm-card-line-soft);
     border-radius: var(--vm-radius-card);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -914,7 +1031,7 @@ body:has(.vm-shell) #content {
     font-weight: 700;
     line-height: var(--vm-leading-snug);
     letter-spacing: -0.015em;
-    color: var(--vm-cream);
+    color: var(--vm-card-ink);
     min-width: 0;
     overflow-wrap: anywhere;
 }
@@ -928,7 +1045,7 @@ body:has(.vm-shell) #content {
     margin: 0;
     font-size: var(--vm-text-body);
     line-height: var(--vm-leading-body);
-    color: var(--vm-body-text);
+    color: var(--vm-card-body);
     flex: 1;
 }
 
@@ -944,11 +1061,11 @@ body:has(.vm-shell) #content {
 .vm-case-tags a {
     display: inline-flex;
     padding: 4px 9px;
-    border: 1px solid var(--vm-line-strong);
+    border: 1px solid var(--vm-card-line-strong);
     border-radius: var(--vm-radius-pill);
     font-size: var(--vm-text-2xs);
     font-weight: 500;
-    color: var(--vm-muted-80);
+    color: var(--vm-card-muted-2);
     text-decoration: none;
     white-space: nowrap;
 }
@@ -979,7 +1096,7 @@ body:has(.vm-shell) #content {
     min-width: 0;
     padding: var(--vm-space-5);
     background: var(--vm-card-dark);
-    border: 1px solid var(--vm-line-soft);
+    border: 1px solid var(--vm-card-line-soft);
     border-radius: var(--vm-radius-card);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -993,7 +1110,7 @@ body:has(.vm-shell) #content {
     font-size: var(--vm-text-h3);
     font-weight: 700;
     letter-spacing: -0.015em;
-    color: var(--vm-cream);
+    color: var(--vm-card-ink);
 }
 
 .vm-exp-domain {
@@ -1002,14 +1119,14 @@ body:has(.vm-shell) #content {
     font-weight: 600;
     letter-spacing: var(--vm-tracking-eyebrow);
     text-transform: uppercase;
-    color: var(--vm-eyebrow);
+    color: var(--vm-card-eyebrow);
 }
 
 .vm-exp-body {
     margin: 0;
     font-size: var(--vm-text-body);
     line-height: var(--vm-leading-body);
-    color: var(--vm-body-text);
+    color: var(--vm-card-body);
 }
 
 /* ============================================================
@@ -1097,7 +1214,7 @@ body:has(.vm-shell) #content {
    ============================================================ */
 .vm-footer {
     border-top: 1px solid var(--vm-line-hair);
-    background: var(--vm-near-black);
+    background: var(--vm-footer-bg);
     padding-block: var(--vm-space-6);
 }
 
@@ -1112,7 +1229,7 @@ body:has(.vm-shell) #content {
 .vm-footer-copy {
     margin: 0;
     font-size: var(--vm-text-xs);
-    color: var(--vm-muted-70);
+    color: var(--vm-footer-muted);
 }
 
 .vm-footer .vm-socials a {
@@ -1194,7 +1311,7 @@ main.main,
     .vm-btn--ghost:hover,
     .vm-btn--ghost:focus-visible {
         border-color: var(--vm-cream);
-        background: rgba(255, 251, 243, 0.1);
+        background: var(--vm-ghost-hover-bg);
     }
 
     .vm-btn:active,
@@ -1230,7 +1347,7 @@ main.main,
     .vm-case:hover,
     .vm-case:focus-within,
     .vm-exp-item:hover {
-        border-color: var(--vm-line-strong);
+        border-color: var(--vm-card-line-strong);
         transform: translateY(-2px);
     }
 
@@ -1263,7 +1380,7 @@ main.main,
 
     .vm-case-title a:hover,
     .vm-case-title a:focus-visible {
-        color: var(--vm-peach-italic);
+        color: var(--vm-card-accent);
     }
 
     .vm-case-tags a {
@@ -1274,9 +1391,58 @@ main.main,
 
     .vm-case-tags a:hover,
     .vm-case-tags a:focus-visible {
-        color: var(--vm-cream);
+        color: var(--vm-card-ink);
         border-color: var(--vm-accent);
     }
+}
+
+/* ============================================================
+   THEME TOGGLE — home-shell button. Content pages use PaperMod's
+   own #theme-toggle (same localStorage "pref-theme" key); this
+   button exists only in the custom home header and is driven by
+   a 7-line delegated script in extend_head.html (no deps).
+   Moon shows in light (target: dark), sun in dark (target: light).
+   ============================================================ */
+.vm-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid var(--vm-line-strong);
+    border-radius: var(--vm-radius-pill);
+    background: transparent;
+    color: var(--vm-nav-text);
+    font-family: var(--vm-font-sans);
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        border-color var(--vm-dur-fast) var(--vm-ease-out),
+        color var(--vm-dur-fast) var(--vm-ease-out);
+}
+
+.vm-theme-toggle:hover,
+.vm-theme-toggle:focus-visible {
+    border-color: var(--vm-accent);
+    color: var(--vm-cream);
+}
+
+.vm-theme-toggle .vm-toggle-sun {
+    display: inline-flex;
+}
+
+.vm-theme-toggle .vm-toggle-moon {
+    display: none;
+}
+
+html[data-theme="light"] .vm-theme-toggle .vm-toggle-sun {
+    display: none;
+}
+
+html[data-theme="light"] .vm-theme-toggle .vm-toggle-moon {
+    display: inline-flex;
 }
 
 /* ============================================================
@@ -1349,6 +1515,7 @@ main.main,
     }
 
     .vm-topbar-cta {
+        display: none;
         padding: 7px 11px;
         font-size: var(--vm-text-2xs);
     }

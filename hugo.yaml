@@ -11,9 +11,9 @@ module:
     - path: github.com/adityatelange/hugo-PaperMod
 params:
   env: production
-  title: "Vaishnav Mhetre — Platform Engineer & Document Engineer"
-  description: "Motor-insurance and market-data platform engineering, documented IP-safely. Engineer-facing portfolio and blog."
-  keywords: ["Java", "TypeScript", "Node.js", "GCP", "Spring Boot", "event-driven", "microservices", "motor insurance", "market data", "document engineering"]
+  title: "Vaishnav Mhetre — Platform Engineer & Data Engineer"
+  description: "Binary data delivery, event-driven systems, and microservices on GCP — engineer-facing portfolio and blog."
+  keywords: ["Java", "TypeScript", "Node.js", "GCP", "Spring Boot", "Kafka", "event-driven", "microservices", "binary data delivery", "motor insurance", "market data"]
   author: "Vaishnav Mhetre"
   DateFormat: "January 2, 2006"
   defaultTheme: auto
@@ -35,7 +35,7 @@ params:
   designDirection: "polished"
   homeInfoParams:
     Title: "Vaishnav Mhetre"
-    Content: "Motor-insurance + market-data platform engineer. I design event-driven systems, microservices, and document pipelines, and I write about [document engineering] and [building this site]."
+    Content: "Motor-insurance + market-data platform engineer. I design event-driven systems, microservices, and binary data delivery, and I write about [data delivery] and [building this site]."
   socialIcons:
     - name: github
       url: "https://github.com/vaishnavmhetre"
