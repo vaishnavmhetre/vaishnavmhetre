@@ -8,7 +8,7 @@ defaults: { run: { shell: bash } }
 jobs:
   build:
     runs-on: ubuntu-latest
-    env: { HUGO_VERSION: 0.166.0, GO_VERSION: 1.27.0 }
+    env: { HUGO_VERSION: 0.166.0, GO_VERSION: 1.27.1 }
     steps:
       - uses: actions/checkout@v7  # submodules: recursive, fetch-depth: 0
       - id: pages

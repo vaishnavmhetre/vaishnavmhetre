@@ -197,6 +197,35 @@ html[data-theme="light"] {
     --border: var(--vm-line);
     --accent: #B04C0C;
     --focus-ring: #B04C0C;
+
+    /* ------------------------------------------------------------
+       DYNAMIC SURFACES — glass cards, badges, CTAs, accents flip
+       with the theme. Previously these were hardcoded in :root
+       (e.g. --vm-card-dark rgba(30,15,8,0.88)) so profile / cases
+       / exp / badges stayed dark glass on the ivory page. Now
+       they resolve to tokens that adapt: warm ivory glass on ivory,
+       espresso ink on espresso. Text tokens already flipped above
+       via --vm-cream / --vm-body-text.
+       ------------------------------------------------------------ */
+    --vm-card-dark:          rgba(255, 247, 237, 0.88);
+    --vm-card-dark-solid:    #FFF7ED;
+    --vm-card-ink:           var(--vm-cream);
+    --vm-card-body:          var(--vm-body-text);
+    --vm-card-muted:         var(--vm-muted-70);
+    --vm-card-muted-2:       var(--vm-muted-80);
+    --vm-card-eyebrow:       var(--vm-eyebrow);
+    --vm-card-accent:        var(--vm-peach-italic);
+    --vm-card-accent-2:      #9A3412;   /* darker orange for AA on light bg */
+    --vm-card-line-soft:     rgba(42, 21, 8, 0.16);
+    --vm-card-line-strong:   rgba(42, 21, 8, 0.24);
+    --vm-card-line-hair:     rgba(42, 21, 8, 0.10);
+
+    --vm-btn-dark:           rgba(255, 247, 237, 0.92);
+    --vm-btn-ink:            var(--vm-cream);
+
+    --vm-stat-light-bg:      rgba(255, 237, 218, 0.62);
+    --vm-stat-light-ink:     var(--vm-cream);
+    --vm-stat-light-label:   var(--vm-muted-70);
 }
 
 /* Mirrors the light block: PaperMod scopes its palette (incl. --theme:
