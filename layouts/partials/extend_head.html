@@ -1,0 +1,4 @@
+{{ $gc := site.Params.goatcounter }}
+{{- if and $gc.enabled (ne hugo.Environment "development") $gc.code }}
+<script data-goatcounter="https://{{ $gc.code }}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+{{- end }}
