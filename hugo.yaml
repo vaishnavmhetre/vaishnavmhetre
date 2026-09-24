@@ -1,0 +1,73 @@
+baseURL: "https://vaishnavmhetre.github.io/"
+languageCode: "en-us"
+title: "Vaishnav Mhetre"
+theme: ["github.com/adityatelange/hugo-PaperMod"]
+enableRobotsTXT: true
+enableEmoji: true
+paginate: 10
+timeout: 60s
+module:
+  imports:
+    - path: github.com/adityatelange/hugo-PaperMod
+params:
+  env: production
+  title: "Vaishnav Mhetre — Platform Engineer & Document Engineer"
+  description: "Motor-insurance and market-data platform engineering, documented IP-safely. Engineer-facing portfolio and blog."
+  keywords: ["Java", "TypeScript", "Node.js", "GCP", "Spring Boot", "event-driven", "microservices", "motor insurance", "market data", "document engineering"]
+  author: "Vaishnav Mhetre"
+  DateFormat: "January 2, 2006"
+  defaultTheme: auto
+  disableThemeToggle: false
+  ShowReadingTime: true
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: true
+  ShowRssButtonInSectionTermList: true
+  UseHugoToc: true
+  showtoc: false
+  hideSummary: false
+  goatcounter:
+    enabled: false
+    code: ""
+  homeMode: "home-info"
+  designDirection: "polished"
+  homeInfoParams:
+    Title: "Vaishnav Mhetre"
+    Content: "Motor-insurance + market-data platform engineer. I design event-driven systems, microservices, and document pipelines, and I write about [document engineering] and [building this site]."
+  socialIcons:
+    - name: github
+      url: "https://github.com/vaishnavmhetre"
+    - name: linkedin
+      url: "https://www.linkedin.com/in/vaishnav-mhetre/"   # USER: confirm handle
+  cover:
+    hiddenInSingle: true
+menu:
+  main:
+    - identifier: about
+      name: About
+      url: /about/
+      weight: 10
+    - identifier: case-studies
+      name: Case Studies
+      url: /case-studies/
+      weight: 20
+    - identifier: posts
+      name: Blog
+      url: /posts/
+      weight: 30
+    - identifier: tags
+      name: Tags
+      url: /tags/
+      weight: 40
+markup:
+  highlight:
+    noClasses: false
+    codeFences: true
+    guessSyntax: true
+    lineNos: true
+    style: monokai
+  goldmark:
+    renderer:
+      unsafe: false
