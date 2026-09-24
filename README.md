@@ -8,7 +8,7 @@ every push to `main`.
 
 ## Status
 
-🚧 In early research/planning — nothing to see yet.
+🟢 Live — deployed to GitHub Pages from `main` (GitHub Actions, free tier).
 
 ## Planned
 
