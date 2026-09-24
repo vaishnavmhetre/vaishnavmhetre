@@ -1,0 +1,104 @@
+/*
+ * Design-token seam (T6) — shared, neutral customization layer both prototype branches fork and override.
+ * Customizations live ONLY in assets/css/extended/ + layouts/ overrides; the PaperMod module stays
+ * content-unpinned (go.sum pins versions). Plain CSS only: no SCSS, no webfonts, no CDN, no JS.
+ */
+
+/* ============================================================
+   COLOR TOKENS — neutral-but-warm day palette (DEFAULT)
+   PaperMod exposes --theme/--entry/--primary/--secondary/
+   --tertiary/--content/--border on <html>; we warm them here
+   and layer semantic tokens on top. WCAG AA for body text.
+   ============================================================ */
+:root {
+    /* PaperMod core palette — warm neutrals */
+    --theme: rgb(250, 249, 247);
+    --entry: rgb(255, 255, 255);
+    --primary: rgb(28, 27, 26);
+    --secondary: rgb(95, 92, 87);
+    --tertiary: rgb(220, 216, 209);
+    --content: rgb(36, 34, 32);
+    --border: rgb(232, 228, 221);
+    --code-bg: rgb(243, 241, 236);
+    --code-block-bg: rgb(35, 33, 30);
+
+    /* Semantic layer — references PaperMod vars above */
+    --accent: var(--primary);
+    --surface-raised: var(--entry);
+    --text-link-underline: var(--secondary);
+    --focus-ring: var(--secondary);
+}
+
+/* ============================================================
+   COLOR TOKENS — dark palette (PaperMod sets data-theme on <html>)
+   ============================================================ */
+[data-theme="dark"] {
+    --theme: rgb(27, 26, 25);
+    --entry: rgb(36, 35, 33);
+    --primary: rgb(236, 233, 228);
+    --secondary: rgb(168, 164, 157);
+    --tertiary: rgb(74, 71, 66);
+    --content: rgb(217, 213, 207);
+    --border: rgb(52, 50, 47);
+    --code-bg: rgb(43, 42, 39);
+    --code-block-bg: rgb(36, 35, 33);
+
+    /* Semantic layer */
+    --accent: var(--primary);
+    --surface-raised: var(--entry);
+    --text-link-underline: var(--secondary);
+    --focus-ring: var(--secondary);
+}
+
+/* ============================================================
+   TYPE TOKENS — system font stacks (no webfont download),
+   modular size scale, line-height scale
+   ============================================================ */
+:root {
+    --font-body: system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
+        "Liberation Mono", monospace;
+
+    --text-xs: 0.75rem;   /* 12px — labels, tags */
+    --text-sm: 0.875rem;  /* 14px — meta, summaries */
+    --text-base: 1rem;    /* 16px — body */
+    --text-lg: 1.125rem;  /* 18px — lede */
+    --text-xl: 1.25rem;   /* 20px */
+    --text-2xl: 1.5rem;   /* 24px — card headings */
+    --text-3xl: 1.875rem; /* 30px — section headings */
+    --text-4xl: 2.25rem;  /* 36px — page titles */
+
+    --leading-tight: 1.25;
+    --leading-snug: 1.4;
+    --leading-body: 1.6;
+}
+
+body {
+    font-family: var(--font-body);
+}
+
+/* ============================================================
+   SPACING / RADIUS TOKENS — derived from PaperMod --gap/--radius
+   ============================================================ */
+:root {
+    --space-1: calc(var(--gap) / 6);      /* 4px  */
+    --space-2: calc(var(--gap) / 3);      /* 8px  */
+    --space-3: calc(var(--gap) / 2);      /* 12px */
+    --space-4: var(--gap);                /* 24px */
+    --space-5: calc(var(--gap) * 1.5);    /* 36px */
+    --space-6: calc(var(--gap) * 2);      /* 48px */
+
+    --radius-sm: calc(var(--radius) / 2); /* 4px  */
+    --radius-md: var(--radius);           /* 8px  */
+    --radius-lg: calc(var(--radius) * 1.5);
+    --radius-pill: 999px;
+}
+
+/* ============================================================
+   SELECTION
+   ============================================================ */
+::selection {
+    background: var(--tertiary);
+    color: var(--primary);
+}
