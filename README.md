@@ -19,9 +19,13 @@ every push to `main`.
 
 ## Tech
 
-To be decided (research in progress): static site generator, theme, and content
-pipeline. See `docs/agents/` for repo conventions.
+**Hugo (Extended)** + **PaperMod** (Hugo module), deployed via **GitHub Actions**
+to **GitHub Pages**. Content authored in Markdown. See `docs/agents/` for repo
+conventions.
 
 ## Local dev
 
-_(to be filled in once the stack is chosen)_
+- `brew install hugo` (Extended)
+- `hugo server -D` (drafts included) → http://localhost:1313/
+- `bash scripts/verify-site.sh` to run the full verification
+- Per clone: `git config core.hooksPath .githooks` (guard hook re-wiring)
