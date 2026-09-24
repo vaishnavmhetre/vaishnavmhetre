@@ -1,4 +1,27 @@
 {{ define "main" }}
+<script>
+    /* Scroll-reveal bootstrap: runs before first paint so cards are
+       hidden pre-paint (no flash). Adds .motion-reveal ONLY when the
+       user allows motion and IO exists — otherwise content stays
+       fully visible and static. */
+    (function () {
+        if (!window.matchMedia("(prefers-reduced-motion: no-preference)").matches) return;
+        if (!("IntersectionObserver" in window)) return;
+        document.documentElement.classList.add("motion-reveal");
+        document.addEventListener("DOMContentLoaded", function () {
+            var io = new IntersectionObserver(function (entries) {
+                for (var i = 0; i < entries.length; i++) {
+                    if (entries[i].isIntersecting) {
+                        entries[i].target.classList.add("is-visible");
+                        io.unobserve(entries[i].target);
+                    }
+                }
+            }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+            var els = document.querySelectorAll(".landing-cards .case-study-card, .landing .post-entry");
+            for (var j = 0; j < els.length; j++) io.observe(els[j]);
+        });
+    })();
+</script>
 <style>
     /* T5 landing; T6 will promote tokens */
     .landing-hero {
@@ -99,12 +122,47 @@
 
     @media (prefers-reduced-motion: no-preference) {
         .case-study-card {
-            transition: border-color 0.2s ease, transform 0.2s ease;
+            transition:
+                border-color var(--dur-fast) ease,
+                transform var(--dur-base) var(--ease-out),
+                box-shadow var(--dur-base) var(--ease-out);
         }
 
         .case-study-card:hover,
         .case-study-card:focus-within {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: var(--lift-shadow);
+        }
+
+        .case-study-tags a {
+            transition:
+                color var(--dur-fast) ease,
+                border-color var(--dur-fast) ease;
+        }
+
+        .case-study-tags a:hover,
+        .case-study-tags a:focus-visible {
+            color: var(--primary);
+            border-color: var(--tertiary);
+        }
+
+        .case-study-cta span {
+            display: inline-block;
+            transition: transform var(--dur-base) var(--ease-out);
+        }
+
+        .case-study-card:hover .case-study-cta span,
+        .case-study-card:focus-within .case-study-cta span {
+            transform: translateX(3px);
+        }
+
+        .landing-more {
+            transition: color var(--dur-fast) ease;
+        }
+
+        .landing-more:hover,
+        .landing-more:focus-visible {
+            color: var(--primary);
         }
     }
 

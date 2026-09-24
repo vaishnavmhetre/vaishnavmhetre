@@ -102,3 +102,138 @@ body {
     background: var(--tertiary);
     color: var(--primary);
 }
+
+/* ============================================================
+   MOTION TOKENS (Prototype A — animation-forward)
+   Shared durations/easings so every animation in the site uses
+   the same ingredients. Lift shadow carries dark-mode support.
+   ============================================================ */
+:root {
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --dur-fast: 160ms;   /* hover color/border feedback */
+    --dur-base: 240ms;   /* hover lift, nav micro-motion */
+    --dur-slow: 380ms;   /* hero entry, scroll reveal */
+    --lift-shadow: 0 10px 30px -18px rgb(28 27 26 / 0.45);
+}
+
+[data-theme="dark"] {
+    --lift-shadow: 0 10px 30px -18px rgb(0 0 0 / 0.6);
+}
+
+/* ============================================================
+   MOTION OVERRIDES — every animation below is gated by
+   prefers-reduced-motion: no-preference. Under `reduce` none of
+   these rules apply and the site renders fully static.
+   ============================================================ */
+
+/* Hero entry: one-shot staggered fade-up on first paint. Pure CSS
+   keyframes with `backwards` fill — no JS, no load-blocking. */
+@keyframes hero-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+}
+
+/* Nav micro-transitions: color (always available) plus a quiet
+   underline that grows on hover — instant under `reduce`. */
+.navbar a,
+.menu a {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0 1px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .landing-hero h1,
+    .landing-lede,
+    .landing-frame,
+    .landing-hero .social-icons {
+        animation: hero-in var(--dur-slow) var(--ease-out) backwards;
+    }
+
+    .landing-hero h1 {
+        animation-delay: 40ms;
+    }
+
+    .landing-lede {
+        animation-delay: 120ms;
+    }
+
+    .landing-frame {
+        animation-delay: 200ms;
+    }
+
+    .landing-hero .social-icons {
+        animation-delay: 280ms;
+    }
+
+    .navbar a,
+    .menu a,
+    .social-icons a {
+        transition:
+            color var(--dur-fast) ease,
+            transform var(--dur-base) var(--ease-out);
+    }
+
+    .navbar a,
+    .menu a {
+        transition:
+            color var(--dur-fast) ease,
+            background-size var(--dur-base) var(--ease-out);
+    }
+
+    .navbar a:hover,
+    .navbar a:focus-visible,
+    .menu a:hover,
+    .menu a:focus-visible {
+        background-size: 100% 1px;
+    }
+
+    .social-icons a:hover,
+    .social-icons a:focus-visible {
+        transform: translateY(-2px);
+    }
+}
+
+/* Scroll reveal: cards/posts start hidden ONLY when (a) the user
+   allows motion and (b) the inline script on the landing page has
+   confirmed IntersectionObserver support by adding .motion-reveal
+   to <html>. No JS / reduce / no IO → content is visible as-is. */
+@media (prefers-reduced-motion: no-preference) {
+    html.motion-reveal .landing-cards .case-study-card,
+    html.motion-reveal .landing .post-entry {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    html.motion-reveal .landing-cards .case-study-card.is-visible,
+    html.motion-reveal .landing .post-entry.is-visible {
+        opacity: 1;
+        transform: none;
+        transition:
+            opacity var(--dur-slow) var(--ease-out),
+            transform var(--dur-slow) var(--ease-out),
+            border-color var(--dur-fast) ease,
+            box-shadow var(--dur-base) var(--ease-out);
+    }
+
+    /* Stagger cards as they enter; hover resets the delay so the
+       lift never feels sluggish. */
+    html.motion-reveal .landing-cards .case-study-card:nth-child(2).is-visible {
+        transition-delay: 70ms;
+    }
+
+    html.motion-reveal .landing-cards .case-study-card:nth-child(3).is-visible {
+        transition-delay: 140ms;
+    }
+
+    html.motion-reveal .landing-cards .case-study-card.is-visible:hover,
+    html.motion-reveal .landing-cards .case-study-card.is-visible:focus-within {
+        transform: translateY(-3px);
+        border-color: var(--tertiary);
+        box-shadow: var(--lift-shadow);
+        transition-delay: 0ms;
+    }
+}
