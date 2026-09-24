@@ -1,3 +1,25 @@
+{{- /* Dark burnt-orange seam: NO webfonts (system stacks only — see the
+       DESIGN-DNA block in assets/css/extended/custom.css). GoatCounter
+       stays gated and disabled via params.goatcounter.enabled. */ -}}
+
+{{- /* Theme toggle — home shell only (PaperMod ships its own #theme-toggle
+       for content pages). Delegated: one listener, matches only the home
+       button, writes the SAME localStorage "pref-theme" key PaperMod reads,
+       so home and content pages share a single theme. */ -}}
+<script>
+(function () {
+  var KEY = "pref-theme";
+  var root = document.documentElement;
+  document.addEventListener("click", function (e) {
+    var btn = e.target && e.target.closest ? e.target.closest(".vm-theme-toggle") : null;
+    if (!btn) return;
+    root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+    try { localStorage.setItem(KEY, root.dataset.theme); } catch (err) {}
+    btn.setAttribute("aria-label", root.dataset.theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+  });
+})();
+</script>
+
 {{ $gc := site.Params.goatcounter }}
 {{- if and $gc.enabled (ne hugo.Environment "development") $gc.code }}
 <script data-goatcounter="https://{{ $gc.code }}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

@@ -1,20 +1,19 @@
-{{- /* Reusable case-study card: title, summary, tags, CTA. Styles ship with the T5 landing; T6 promotes tokens. */ -}}
-<article class="case-study-card">
-    <span class="case-study-label">Case study</span>
-    <header class="entry-header">
-        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+{{- /* Dark burnt-orange case-study card: glass card on the espresso base —
+       cream title, muted summary, outline tag pills, orange typographic CTA.
+       Styles ship in assets/css/extended/custom.css (.vm-case*). */ -}}
+<li class="vm-case">
+    <header>
+        <h3 class="vm-case-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
     </header>
     {{- with .Summary }}
-    <p class="case-study-summary">{{ . | plainify | htmlUnescape }}</p>
+    <p class="vm-case-summary">{{ . | plainify | htmlUnescape }}</p>
     {{- end }}
     {{- with .Params.tags }}
-    <ul class="case-study-tags">
+    <ul class="vm-case-tags">
         {{- range . }}
         <li><a href="{{ printf "tags/%s/" (. | urlize) | relURL }}">{{ . }}</a></li>
         {{- end }}
     </ul>
     {{- end }}
-    <footer class="case-study-footer">
-        <a class="case-study-cta" href="{{ .RelPermalink }}">Read the case study <span aria-hidden="true">→</span></a>
-    </footer>
-</article>
+    <a class="vm-case-cta" href="{{ .RelPermalink }}">Read the case study <span aria-hidden="true">→</span></a>
+</li>

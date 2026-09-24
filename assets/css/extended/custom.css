@@ -1,104 +1,1526 @@
-/*
- * Design-token seam (T6) — shared, neutral customization layer both prototype branches fork and override.
- * Customizations live ONLY in assets/css/extended/ + layouts/ overrides; the PaperMod module stays
- * content-unpinned (go.sum pins versions). Plain CSS only: no SCSS, no webfonts, no CDN, no JS.
+/* DESIGN-DNA
+ * ---------------------------------------------------------------------------
+ * Name: "Dark burnt-orange story" — recreation of the Dribbble reference
+ *       (shot 1, "Developer Portfolio Website") adapted for Vaishnav Mhetre.
+ *
+ * Palette (dark-warm default + warm-ivory light theme; the light/dark
+ *   glass-card "duo" stays dark in both themes):
+ *   - Hero gradient: #CE651B 0% → #9A430E 35% → #3A1A0B 65% → #140B06 100%
+ *   - Cream primary text #FFF7ED · muted peach #E9C6A2 @ 70%
+ *   - Accent orange #FF7A18 · pale peach italic #FFD8A8
+ *   - Light stat card #FFF1DE on ink #1C0E06 (label #7A5A44)
+ *   - Dark glass cards rgba(30,15,8,0.88) + 1px rgba(255,255,255,0.12)
+ *   - Marquee strip rgba(0,0,0,0.35), text #D8B795, orange • separators
+ *
+ * Type system (system fonts only — no webfonts):
+ *   - Display/body: -apple-system / Helvetica Neue grotesk stack (bold H1,
+ *     -0.02em tracking, tight 1.04 leading)
+ *   - Accent: ui-serif / Georgia / Times New Roman ITALIC for the one
+ *     peach serif-italic word inside the H1
+ *   - Eyebrow: 10-11px, 600, +0.18em tracked uppercase
+ *
+ * Signature moments (the five that must not get lost):
+ *   1. Serif-italic peach accent word ("real") inside the thick cream H1
+ *   2. Light-cream stat card sitting NEXT TO the dark glass stat card
+ *      (the light/dark duo — never both the same)
+ *   3. Availability-style badge pinned to the top of the profile card,
+ *      with the 4:5 monogram block standing in for the reference photo
+ *   4. Dual CTA: solid cream pill + ghost outline pill (header + hero)
+ *   5. Full-bleed tech ticker with orange dot separators, CSS-only marquee
+ *
+ * Builder adaptations vs the reference (noted per task mandate):
+ *   - No portrait photo → "VM" duotone gradient monogram block (~4:5).
+ *   - No live clock / no verified location → header meta zone omitted
+ *     (reference's "Azamgarh, IN - 04:50 am" dropped, not replaced).
+ *   - "Download my resume" → "View on GitHub ↗" (no resume file exists).
+ *   - Reference personal copy/stack/stats never copied; all content is
+ *     Vaishnav's real content from hugo.yaml + content/.
+ *   - Nav: Work · About · Experience · Skills · Contact (no Services
+ *     page exists). Rendered as in-page sticky bar on the home shell;
+ *     PaperMod's site header/footer are hidden only on home via :has().
+ *   - Mobile menu is a CSS-only <details> disclosure (no JavaScript).
+ *   - Theme toggle: light/dark via PaperMod's data-theme attr + one small
+ *     delegated script in extend_head.html (the only JS on the site).
+ *   - Ambiguity call: reference "Experience" content below the fold was
+ *     never shown — built as two rule-separated entries from about.md
+ *     (NielsenIQ, Allianz Technology) in the same card/section system.
+ * ---------------------------------------------------------------------------
+ * TOKEN DISCIPLINE: every color/font/size/duration is declared ONCE in the
+ * token blocks below. Everything after references var(...) only.
  */
 
 /* ============================================================
-   COLOR TOKENS — neutral-but-warm day palette (DEFAULT)
-   PaperMod exposes --theme/--entry/--primary/--secondary/
-   --tertiary/--content/--border on <html>; we warm them here
-   and layer semantic tokens on top. WCAG AA for body text.
+   TOKEN BLOCK 1 — COLOR
    ============================================================ */
 :root {
-    /* PaperMod core palette — warm neutrals */
-    --theme: rgb(250, 249, 247);
-    --entry: rgb(255, 255, 255);
-    --primary: rgb(28, 27, 26);
-    --secondary: rgb(95, 92, 87);
-    --tertiary: rgb(220, 216, 209);
-    --content: rgb(36, 34, 32);
-    --border: rgb(232, 228, 221);
-    --code-bg: rgb(243, 241, 236);
-    --code-block-bg: rgb(35, 33, 30);
+    /* Raw palette */
+    --vm-orange-top: #CE651B;
+    --vm-orange-mid: #9A430E;
+    --vm-rust: #3A1A0B;
+    --vm-espresso: #140B06;
+    --vm-near-black: #120904;
+    --vm-cream: #FFF7ED;
+    --vm-cream-soft: #FFF3E4;
+    --vm-muted-peach: #E9C6A2;
+    --vm-accent: #FF7A18;
+    --vm-accent-2: #FF8C2E;
+    --vm-peach-italic: #FFD8A8;
+    --vm-eyebrow: #E8B98A;
+    --vm-cta-solid-bg: #FFFBF3;
+    --vm-cta-solid-ink: #1C0E06;
+    --vm-cta-solid-hover: #FFE8CC;
+    --vm-stat-light-bg: #FFF1DE;
+    --vm-stat-light-ink: #1C0E06;
+    --vm-stat-light-label: #7A5A44;
+    --vm-card-dark: rgba(30, 15, 8, 0.88);
+    --vm-card-dark-solid: #201006;
+    --vm-btn-dark: #2E1B10;
+    --vm-marquee-bg: rgba(0, 0, 0, 0.35);
+    --vm-marquee-text: #D8B795;
 
-    /* Semantic layer — references PaperMod vars above */
-    --accent: var(--primary);
-    --surface-raised: var(--entry);
-    --text-link-underline: var(--secondary);
-    --focus-ring: var(--secondary);
+    /* Composited text colors (AA on --vm-espresso / gradient base) */
+    --vm-body-text: rgba(255, 240, 220, 0.72);
+    --vm-nav-text: rgba(255, 240, 220, 0.75);
+    --vm-muted-70: rgba(233, 198, 162, 0.7);
+    --vm-muted-80: rgba(233, 198, 162, 0.8);
+
+    /* Lines & glass */
+    --vm-line: rgba(255, 240, 220, 0.18);
+    --vm-line-strong: rgba(255, 240, 220, 0.28);
+    --vm-line-soft: rgba(255, 255, 255, 0.12);
+    --vm-line-hair: rgba(255, 255, 255, 0.08);
+    --vm-header-bg: rgba(18, 9, 4, 0.72);
+    --vm-glow: rgba(255, 122, 24, 0.28);
+
+    /* Gradients */
+    --vm-grad-hero: linear-gradient(180deg,
+            var(--vm-orange-top) 0%,
+            var(--vm-orange-mid) 35%,
+            var(--vm-rust) 65%,
+            var(--vm-espresso) 100%);
+    --vm-grad-glow: radial-gradient(ellipse 70% 55% at 50% 0%,
+            var(--vm-glow) 0%,
+            transparent 70%);
+    --vm-grad-monogram: linear-gradient(145deg,
+            var(--vm-accent-2) 0%,
+            #C05010 45%,
+            var(--vm-rust) 100%);
+
+    /* Semantic aliases (PaperMod core vars kept functional site-wide) */
+    --theme: var(--vm-espresso);
+    --content: var(--vm-cream);
+    --primary: var(--vm-cream);
+    --secondary: var(--vm-muted-peach);
+    --border: var(--vm-line);
+    --accent: var(--vm-accent);
+    --focus-ring: var(--vm-accent);
+
+    /* THEME SEMANTICS — dark is the default palette. The page-level
+       tokens below flip under html[data-theme="light"]; the vm-card-*
+       tokens are surface-scoped and intentionally DO NOT flip (espresso
+       glass cards stay dark in both themes — the light/dark "duo"). */
+    --vm-page-bg: var(--vm-espresso);
+    --vm-footer-bg: var(--vm-near-black);
+    --vm-footer-muted: var(--vm-muted-70);
+    --vm-eyebrow-hero: rgba(255, 220, 180, 0.85);
+    --vm-ghost-hover-bg: rgba(255, 251, 243, 0.1);
+    --vm-arrow-circle-bg: rgba(28, 14, 6, 0.12);
+    --vm-card-ink: var(--vm-cream);
+    --vm-card-body: var(--vm-body-text);
+    --vm-card-muted: var(--vm-muted-70);
+    --vm-card-muted-2: var(--vm-muted-80);
+    --vm-card-eyebrow: var(--vm-eyebrow);
+    --vm-card-accent: var(--vm-peach-italic);
+    --vm-card-line-soft: var(--vm-line-soft);
+    --vm-card-line-strong: var(--vm-line-strong);
+    --vm-card-line-hair: var(--vm-line-hair);
+
+    /* Shadows */
+    --vm-shadow-card: 0 20px 60px rgba(0, 0, 0, 0.5);
+    --vm-shadow-btn: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* ============================================================
-   COLOR TOKENS — dark palette (PaperMod sets data-theme on <html>)
+   LIGHT THEME — warm ivory page, espresso ink, burnt-orange
+   accents. Dark glass cards (profile, stat--dark, cases, exp,
+   menu panel, badges) stay dark in both themes; only the
+   page-level surfaces flip. PaperMod's #theme-toggle sets
+   html[data-theme] (localStorage "pref-theme") — this block
+   re-themes the page-level tokens when it's light.
    ============================================================ */
-[data-theme="dark"] {
-    --theme: rgb(27, 26, 25);
-    --entry: rgb(36, 35, 33);
-    --primary: rgb(236, 233, 228);
-    --secondary: rgb(168, 164, 157);
-    --tertiary: rgb(74, 71, 66);
-    --content: rgb(217, 213, 207);
-    --border: rgb(52, 50, 47);
-    --code-bg: rgb(43, 42, 39);
-    --code-block-bg: rgb(36, 35, 33);
+html[data-theme="light"] {
+    --vm-page-bg: #F4E9DA;
+    --vm-footer-bg: #EDDFC9;
+    --vm-footer-muted: #6E4A2E;
 
-    /* Semantic layer */
-    --accent: var(--primary);
-    --surface-raised: var(--entry);
-    --text-link-underline: var(--secondary);
-    --focus-ring: var(--secondary);
+    --vm-cream: #241005;
+    --vm-cream-soft: #4A301B;
+    --vm-body-text: rgba(42, 21, 8, 0.72);
+    --vm-nav-text: rgba(42, 21, 8, 0.78);
+    --vm-muted-70: rgba(94, 62, 36, 0.7);
+    --vm-muted-80: rgba(94, 62, 36, 0.8);
+    --vm-eyebrow: #9E520F;
+    --vm-eyebrow-hero: #9E520F;
+    --vm-peach-italic: #B04C0C;
+    --vm-ghost-hover-bg: rgba(42, 21, 8, 0.07);
+    --vm-arrow-circle-bg: rgba(255, 247, 237, 0.18);
+
+    --vm-line: rgba(42, 21, 8, 0.16);
+    --vm-line-strong: rgba(42, 21, 8, 0.24);
+    --vm-line-soft: rgba(42, 21, 8, 0.14);
+    --vm-line-hair: rgba(42, 21, 8, 0.08);
+
+    --vm-header-bg: rgba(255, 250, 242, 0.78);
+
+    --vm-cta-solid-bg: #241005;
+    --vm-cta-solid-ink: #FFF7ED;
+    --vm-cta-solid-hover: #3A1A0B;
+
+    --vm-grad-hero: linear-gradient(180deg,
+            #F9E3C6 0%,
+            #F1D5AF 38%,
+            #F4E6D0 70%,
+            #F4E9DA 100%);
+    --vm-glow: rgba(255, 122, 24, 0.16);
+
+    --vm-marquee-bg: rgba(237, 223, 201, 0.6);
+    --vm-marquee-text: #6E4A2E;
+
+    --vm-shadow-card: 0 20px 60px rgba(90, 50, 20, 0.16);
+    --vm-shadow-btn: 0 4px 14px rgba(90, 50, 20, 0.14);
+
+    /* PaperMod aliases — deep burnt-orange links keep AA on ivory */
+    --theme: var(--vm-page-bg);
+    --content: var(--vm-cream);
+    --primary: var(--vm-cream);
+    --secondary: #6E4A2E;
+    --border: var(--vm-line);
+    --accent: #B04C0C;
+    --focus-ring: #B04C0C;
+}
+
+/* Mirrors the light block: PaperMod scopes its palette (incl. --theme:
+   #1D1E20 gray) under :root[data-theme="dark"] — specificity (0,2,0),
+   which outranks a bare :root AND html[data-theme="dark"]. Re-assert
+   the espresso defaults in the same scope (same specificity, later in
+   the merged stylesheet) or PaperMod's gray leaks into body/content
+   surfaces in dark mode. */
+:root[data-theme="dark"] {
+    --theme: var(--vm-espresso);
+    --content: var(--vm-cream);
+    --primary: var(--vm-cream);
+    --secondary: var(--vm-muted-peach);
+    --border: var(--vm-line);
+    --accent: var(--vm-accent);
+    --focus-ring: var(--vm-accent);
+}
+
+:root[data-theme="dark"] body,
+:root[data-theme="light"] body {
+    background: var(--vm-page-bg);
 }
 
 /* ============================================================
-   TYPE TOKENS — system font stacks (no webfont download),
-   modular size scale, line-height scale
+   TOKEN BLOCK 2 — TYPE (system stacks only)
    ============================================================ */
 :root {
-    --font-body: system-ui, -apple-system, "Segoe UI", Roboto,
-        "Helvetica Neue", Arial, sans-serif;
-    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
+    --vm-font-sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+        Helvetica, Arial, sans-serif;
+    --vm-font-serif: ui-serif, Georgia, "Times New Roman", Times, serif;
+    --vm-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
         "Liberation Mono", monospace;
 
-    --text-xs: 0.75rem;   /* 12px — labels, tags */
-    --text-sm: 0.875rem;  /* 14px — meta, summaries */
-    --text-base: 1rem;    /* 16px — body */
-    --text-lg: 1.125rem;  /* 18px — lede */
-    --text-xl: 1.25rem;   /* 20px */
-    --text-2xl: 1.5rem;   /* 24px — card headings */
-    --text-3xl: 1.875rem; /* 30px — section headings */
-    --text-4xl: 2.25rem;  /* 36px — page titles */
+    --vm-text-h1: clamp(1.75rem, 1rem + 4.5vw, 3.5rem);   /* 28–56px */
+    --vm-text-h2: clamp(1.5rem, 1rem + 2.5vw, 2.25rem);
+    --vm-text-h3: clamp(1.125rem, 0.9rem + 0.8vw, 1.375rem);
+    --vm-text-stat: clamp(1.75rem, 1.4rem + 1.2vw, 2rem); /* 28–32px */
+    --vm-text-body: 0.875rem;   /* 14px */
+    --vm-text-sm: 0.8125rem;    /* 13px — buttons, nav */
+    --vm-text-xs: 0.6875rem;    /* 11px — pills, marquee */
+    --vm-text-2xs: 0.625rem;    /* 10px — labels, badge */
 
-    --leading-tight: 1.25;
-    --leading-snug: 1.4;
-    --leading-body: 1.6;
+    --vm-leading-h1: 1.04;
+    --vm-leading-snug: 1.35;
+    --vm-leading-body: 1.6;
+
+    --vm-tracking-h1: -0.02em;
+    --vm-tracking-eyebrow: 0.18em;
+    --vm-measure: 46ch;
 }
 
 body {
-    font-family: var(--font-body);
+    font-family: var(--vm-font-sans);
 }
 
 /* ============================================================
-   SPACING / RADIUS TOKENS — derived from PaperMod --gap/--radius
+   TOKEN BLOCK 3 — SPACE / SHAPE / MOTION
    ============================================================ */
 :root {
-    --space-1: calc(var(--gap) / 6);      /* 4px  */
-    --space-2: calc(var(--gap) / 3);      /* 8px  */
-    --space-3: calc(var(--gap) / 2);      /* 12px */
-    --space-4: var(--gap);                /* 24px */
-    --space-5: calc(var(--gap) * 1.5);    /* 36px */
-    --space-6: calc(var(--gap) * 2);      /* 48px */
+    --vm-space-1: 4px;
+    --vm-space-2: 8px;
+    --vm-space-3: 12px;
+    --vm-space-4: 16px;
+    --vm-space-5: 20px;
+    --vm-space-6: 24px;
+    --vm-space-7: 32px;
+    --vm-space-8: 48px;
+    --vm-space-section: clamp(56px, 8vw, 88px);
 
-    --radius-sm: calc(var(--radius) / 2); /* 4px  */
-    --radius-md: var(--radius);           /* 8px  */
-    --radius-lg: calc(var(--radius) * 1.5);
-    --radius-pill: 999px;
+    --vm-radius-pill: 999px;
+    --vm-radius-card: 14px;
+    --vm-radius-card-lg: 18px;
+    --vm-radius-img: 12px;
+
+    --vm-container: 1180px;
+    --vm-header-h: 64px;
+
+    --vm-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --vm-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --vm-dur-fast: 140ms;
+    --vm-dur-base: 240ms;
+    --vm-dur-slow: 420ms;
+    --vm-stagger: 70ms;
+    --vm-marquee-dur: 42s;
 }
 
 /* ============================================================
-   SELECTION
+   BASE — clipping, selection, focus
    ============================================================ */
+html {
+    overflow-x: clip;
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: clip;
+    background: var(--vm-page-bg);
+    color: var(--vm-cream);
+    -webkit-font-smoothing: antialiased;
+}
+
 ::selection {
-    background: var(--tertiary);
-    color: var(--primary);
+    background: var(--vm-accent);
+    color: var(--vm-near-black);
+}
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: var(--vm-radius-img);
+}
+
+/* Home shell replaces PaperMod chrome (header/footer) — hugo.yaml menu
+   stays untouched; only the home page opts out, via :has(). */
+body:has(.vm-shell)>.header,
+body:has(.vm-shell) .header {
+    display: none;
+}
+
+body:has(.vm-shell) .footer {
+    display: none;
+}
+
+body:has(.vm-shell) main.main,
+body:has(.vm-shell) #content {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================================================
+   CONTAINER
+   ============================================================ */
+.vm-wrap {
+    width: 100%;
+    max-width: var(--vm-container);
+    margin-inline: auto;
+    padding-inline: var(--vm-space-6);
+}
+
+@media (max-width: 480px) {
+    .vm-wrap {
+        padding-inline: var(--vm-space-5);
+    }
+}
+
+/* ============================================================
+   STICKY HEADER (reference 3-zone bar)
+   ============================================================ */
+.vm-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    height: var(--vm-header-h);
+    background: var(--vm-header-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--vm-line-hair);
+}
+
+.vm-topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--vm-space-4);
+    height: var(--vm-header-h);
+}
+
+.vm-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--vm-space-2);
+    text-decoration: none;
+    color: var(--vm-cream);
+    min-width: 0;
+}
+
+.vm-logo-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--vm-radius-pill);
+    background: var(--vm-near-black);
+    color: var(--vm-accent);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0;
+    flex: none;
+}
+
+.vm-logo-name {
+    font-size: var(--vm-text-sm);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+}
+
+.vm-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--vm-space-5);
+}
+
+.vm-nav a {
+    font-size: var(--vm-text-sm);
+    font-weight: 500;
+    color: var(--vm-nav-text);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.vm-topbar-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--vm-space-2);
+    padding: 8px 14px;
+    border-radius: var(--vm-radius-pill);
+    background: var(--vm-cta-solid-bg);
+    color: var(--vm-cta-solid-ink);
+    font-size: var(--vm-text-xs);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: var(--vm-shadow-btn);
+}
+
+/* CSS-only mobile nav disclosure (no JS) */
+.vm-navmenu {
+    display: none;
+    position: relative;
+}
+
+.vm-navmenu>summary {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--vm-line-strong);
+    border-radius: var(--vm-radius-pill);
+    color: var(--vm-cream);
+}
+
+.vm-navmenu>summary::-webkit-details-marker {
+    display: none;
+}
+
+.vm-burger,
+.vm-burger::before,
+.vm-burger::after {
+    display: block;
+    width: 14px;
+    height: 1.5px;
+    background: currentColor;
+    border-radius: 2px;
+    position: relative;
+}
+
+.vm-burger::before,
+.vm-burger::after {
+    content: "";
+    position: absolute;
+    left: 0;
+}
+
+.vm-burger::before {
+    top: -5px;
+}
+
+.vm-burger::after {
+    top: 5px;
+}
+
+.vm-navmenu-panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--vm-space-3);
+    min-width: 160px;
+    padding: var(--vm-space-4);
+    background: var(--vm-card-dark);
+    border: 1px solid var(--vm-line-soft);
+    border-radius: var(--vm-radius-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--vm-shadow-card);
+}
+
+.vm-navmenu-panel a {
+    font-size: var(--vm-text-sm);
+    font-weight: 500;
+    color: var(--vm-nav-text);
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .vm-nav {
+        display: none;
+    }
+
+    .vm-navmenu {
+        display: block;
+    }
+}
+
+/* ============================================================
+   HERO — gradient stage, glow, 2-column grid
+   ============================================================ */
+.vm-hero {
+    position: relative;
+    background: var(--vm-grad-hero);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--vm-header-h));
+}
+
+.vm-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--vm-grad-glow);
+    pointer-events: none;
+}
+
+.vm-hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.6fr 0.9fr;
+    gap: var(--vm-space-8);
+    align-items: start;
+    padding-block: var(--vm-space-8) var(--vm-space-7);
+    flex: 1;
+}
+
+.vm-hero-left {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Eyebrow — ✨ INTRODUCTION */
+.vm-eyebrow {
+    margin: 0;
+    font-size: var(--vm-text-2xs);
+    font-weight: 600;
+    letter-spacing: var(--vm-tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--vm-eyebrow);
+}
+
+.vm-hero-left .vm-eyebrow {
+    color: var(--vm-eyebrow-hero);
+}
+
+/* H1 + serif-italic accent word (signature moment 1) */
+.vm-h1 {
+    margin: var(--vm-space-3) 0 0;
+    font-family: var(--vm-font-sans);
+    font-weight: 800;
+    font-size: var(--vm-text-h1);
+    line-height: var(--vm-leading-h1);
+    letter-spacing: var(--vm-tracking-h1);
+    color: var(--vm-cream);
+    max-width: 16ch;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.vm-accent-word {
+    font-family: var(--vm-font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.95em;
+    letter-spacing: -0.01em;
+    color: var(--vm-peach-italic);
+}
+
+.vm-lede {
+    margin: var(--vm-space-4) 0 0;
+    font-size: var(--vm-text-body);
+    line-height: var(--vm-leading-body);
+    color: var(--vm-body-text);
+    max-width: var(--vm-measure);
+}
+
+/* Tag pills */
+.vm-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--vm-space-2);
+    list-style: none;
+    margin: var(--vm-space-4) 0 0;
+    padding: 0;
+}
+
+.vm-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border: 1px solid var(--vm-line-strong);
+    border-radius: var(--vm-radius-pill);
+    background: transparent;
+    font-size: var(--vm-text-xs);
+    font-weight: 500;
+    color: var(--vm-cream-soft);
+    white-space: nowrap;
+}
+
+/* Stat duo — light NEXT TO dark (signature moment 2) */
+.vm-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--vm-space-3);
+    margin-top: var(--vm-space-5);
+    width: 100%;
+    max-width: 420px;
+}
+
+.vm-stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vm-space-1);
+    padding: var(--vm-space-4);
+    border-radius: var(--vm-radius-card);
+}
+
+.vm-stat-label {
+    font-size: var(--vm-text-2xs);
+    font-weight: 500;
+    line-height: var(--vm-leading-snug);
+}
+
+.vm-stat-num {
+    font-size: var(--vm-text-stat);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.vm-stat--light {
+    background: var(--vm-stat-light-bg);
+    color: var(--vm-stat-light-ink);
+    border: none;
+}
+
+.vm-stat--light .vm-stat-label {
+    color: var(--vm-stat-light-label);
+}
+
+.vm-stat--light .vm-stat-num {
+    color: var(--vm-stat-light-ink);
+}
+
+.vm-stat--dark {
+    background: var(--vm-card-dark);
+    border: 1px solid var(--vm-card-line-soft);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--vm-card-ink);
+}
+
+.vm-stat--dark .vm-stat-label {
+    color: var(--vm-card-muted);
+}
+
+.vm-stat--dark .vm-stat-num {
+    color: var(--vm-card-ink);
+}
+
+/* Dual CTA (signature moment 4) */
+.vm-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--vm-space-3);
+    margin-top: var(--vm-space-4);
+}
+
+.vm-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--vm-space-2);
+    min-height: 44px;
+    padding: 12px 20px;
+    border-radius: var(--vm-radius-pill);
+    font-family: var(--vm-font-sans);
+    font-size: var(--vm-text-sm);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.vm-btn--solid {
+    background: var(--vm-cta-solid-bg);
+    color: var(--vm-cta-solid-ink);
+    border: none;
+    box-shadow: var(--vm-shadow-btn);
+}
+
+.vm-btn--ghost {
+    background: transparent;
+    color: var(--vm-cream-soft);
+    border: 1px solid var(--vm-line-strong);
+}
+
+.vm-arrow-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--vm-radius-pill);
+    background: var(--vm-arrow-circle-bg);
+    font-size: 10px;
+    line-height: 1;
+    flex: none;
+}
+
+/* ============================================================
+   PROFILE / AVAILABILITY CARD (signature moments 3 + 5 support)
+   ============================================================ */
+.vm-profile {
+    position: sticky;
+    top: calc(var(--vm-header-h) + var(--vm-space-5));
+    width: 100%;
+    max-width: 320px;
+    justify-self: end;
+    display: flex;
+    flex-direction: column;
+    gap: var(--vm-space-3);
+    padding: var(--vm-space-3);
+    background: var(--vm-card-dark);
+    border: 1px solid var(--vm-card-line-soft);
+    border-radius: var(--vm-radius-card-lg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--vm-shadow-card);
+    text-align: center;
+}
+
+.vm-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    align-self: center;
+    padding: 6px 10px;
+    border-radius: var(--vm-radius-pill);
+    background: var(--vm-btn-dark);
+    border: 1px solid var(--vm-card-line-hair);
+    font-size: var(--vm-text-2xs);
+    font-weight: 500;
+    color: var(--vm-card-ink);
+}
+
+.vm-badge-star {
+    color: var(--vm-accent-2);
+    font-size: 10px;
+    line-height: 1;
+}
+
+/* Monogram block — stands in for the reference portrait (4:5, r12) */
+.vm-monogram {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    width: 100%;
+    border-radius: var(--vm-radius-img);
+    background: var(--vm-grad-monogram);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vm-monogram::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 30% 20%,
+            rgba(255, 247, 237, 0.35) 0%,
+            transparent 60%);
+    pointer-events: none;
+}
+
+.vm-monogram-initials {
+    position: relative;
+    z-index: 1;
+    font-family: var(--vm-font-sans);
+    font-size: clamp(3rem, 6vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--vm-card-ink);
+    text-shadow: 0 2px 18px rgba(18, 9, 4, 0.45);
+}
+
+.vm-profile-name {
+    margin: 0;
+    font-size: var(--vm-text-sm);
+    font-weight: 600;
+    color: var(--vm-card-ink);
+}
+
+.vm-profile-role {
+    margin: 0;
+    font-size: var(--vm-text-2xs);
+    line-height: var(--vm-leading-snug);
+    color: var(--vm-card-muted);
+}
+
+/* Social row — circular outline icons */
+.vm-socials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--vm-space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.vm-socials a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--vm-line-strong);
+    border-radius: var(--vm-radius-pill);
+    color: var(--vm-cream-soft);
+    background: transparent;
+}
+
+/* Socials sit on TWO surfaces: the dark profile card (desktop, sticky)
+   and the footer (which flips light). The .vm-profile scope pins the
+   dark-card palette so it cannot inherit the light page text colors. */
+.vm-profile .vm-socials a {
+    color: var(--vm-card-ink);
+    border-color: var(--vm-card-line-strong);
+}
+
+.vm-profile .vm-socials a:hover,
+.vm-profile .vm-socials a:focus-visible {
+    color: var(--vm-card-accent);
+    border-color: var(--vm-accent);
+}
+
+.vm-socials svg {
+    width: 13px;
+    height: 13px;
+    fill: currentColor;
+}
+
+.vm-profile-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--vm-space-2);
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: var(--vm-radius-pill);
+    background: var(--vm-btn-dark);
+    border: 1px solid var(--vm-card-line-hair);
+    color: var(--vm-card-ink);
+    font-size: var(--vm-text-xs);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* ============================================================
+   TECH TICKER MARQUEE (signature moment 5) — CSS keyframes only
+   ============================================================ */
+.vm-marquee {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: var(--vm-marquee-bg);
+    border-top: 1px solid var(--vm-line-hair);
+    -webkit-mask-image: linear-gradient(90deg,
+            transparent 0%,
+            #000 8%,
+            #000 92%,
+            transparent 100%);
+    mask-image: linear-gradient(90deg,
+            transparent 0%,
+            #000 8%,
+            #000 92%,
+            transparent 100%);
+}
+
+.vm-marquee-track {
+    display: flex;
+    width: max-content;
+    flex-shrink: 0;
+}
+
+.vm-marquee-group {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    font-size: var(--vm-text-xs);
+    color: var(--vm-marquee-text);
+    white-space: nowrap;
+    padding-right: 0;
+}
+
+.vm-marquee-group span {
+    display: inline-flex;
+    align-items: center;
+}
+
+.vm-dot {
+    color: var(--vm-accent);
+    margin-inline: 12px;
+    font-style: normal;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .vm-marquee-track {
+        animation: vm-marquee-scroll var(--vm-marquee-dur) linear infinite;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vm-marquee {
+        overflow-x: auto;
+    }
+}
+
+@keyframes vm-marquee-scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* ============================================================
+   SECTIONS (Work / Experience / Skills / About / Contact)
+   ============================================================ */
+.vm-section {
+    position: relative;
+    padding-block: var(--vm-space-section);
+}
+
+.vm-section+.vm-section {
+    border-top: 1px solid var(--vm-line-hair);
+}
+
+.vm-section-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vm-space-2);
+    margin-bottom: var(--vm-space-6);
+}
+
+.vm-section-title {
+    margin: 0;
+    font-family: var(--vm-font-sans);
+    font-weight: 800;
+    font-size: var(--vm-text-h2);
+    line-height: var(--vm-leading-snug);
+    letter-spacing: var(--vm-tracking-h1);
+    color: var(--vm-cream);
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+/* Short orange rule — reused as section divider (spec §6) */
+.vm-rule {
+    width: 48px;
+    height: 3px;
+    border: none;
+    border-radius: 2px;
+    background: var(--vm-accent);
+    margin: var(--vm-space-1) 0 0;
+}
+
+.vm-section-lede {
+    margin: 0;
+    font-size: var(--vm-text-body);
+    line-height: var(--vm-leading-body);
+    color: var(--vm-body-text);
+    max-width: 56ch;
+}
+
+/* ============================================================
+   CASE STUDY CARDS (via case-study-card partial)
+   ============================================================ */
+.vm-cases {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--vm-space-4);
+}
+
+.vm-case {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vm-space-3);
+    min-width: 0;
+    padding: var(--vm-space-5);
+    background: var(--vm-card-dark);
+    border: 1px solid var(--vm-card-line-soft);
+    border-radius: var(--vm-radius-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.vm-case-title {
+    margin: 0;
+    font-family: var(--vm-font-sans);
+    font-size: var(--vm-text-h3);
+    font-weight: 700;
+    line-height: var(--vm-leading-snug);
+    letter-spacing: -0.015em;
+    color: var(--vm-card-ink);
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.vm-case-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.vm-case-summary {
+    margin: 0;
+    font-size: var(--vm-text-body);
+    line-height: var(--vm-leading-body);
+    color: var(--vm-card-body);
+    flex: 1;
+}
+
+.vm-case-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.vm-case-tags a {
+    display: inline-flex;
+    padding: 4px 9px;
+    border: 1px solid var(--vm-card-line-strong);
+    border-radius: var(--vm-radius-pill);
+    font-size: var(--vm-text-2xs);
+    font-weight: 500;
+    color: var(--vm-card-muted-2);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.vm-case-cta {
+    font-size: var(--vm-text-xs);
+    font-weight: 600;
+    color: var(--vm-accent-2);
+    text-decoration: none;
+    white-space: nowrap;
+    align-self: flex-start;
+}
+
+.vm-case-cta span {
+    display: inline-block;
+}
+
+/* ============================================================
+   EXPERIENCE
+   ============================================================ */
+.vm-exp {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--vm-space-4);
+}
+
+.vm-exp-item {
+    min-width: 0;
+    padding: var(--vm-space-5);
+    background: var(--vm-card-dark);
+    border: 1px solid var(--vm-card-line-soft);
+    border-radius: var(--vm-radius-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--vm-space-2);
+}
+
+.vm-exp-org {
+    margin: 0;
+    font-size: var(--vm-text-h3);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--vm-card-ink);
+}
+
+.vm-exp-domain {
+    margin: 0;
+    font-size: var(--vm-text-2xs);
+    font-weight: 600;
+    letter-spacing: var(--vm-tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--vm-card-eyebrow);
+}
+
+.vm-exp-body {
+    margin: 0;
+    font-size: var(--vm-text-body);
+    line-height: var(--vm-leading-body);
+    color: var(--vm-card-body);
+}
+
+/* ============================================================
+   SKILLS
+   ============================================================ */
+.vm-skill-groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vm-space-4);
+    margin: 0;
+    padding: 0;
+}
+
+.vm-skill-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--vm-space-2);
+    min-width: 0;
+}
+
+.vm-skill-group dt {
+    flex: 0 0 96px;
+    font-size: var(--vm-text-2xs);
+    font-weight: 600;
+    letter-spacing: var(--vm-tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--vm-eyebrow);
+    margin: 0;
+}
+
+.vm-skill-group dd {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--vm-space-2);
+    margin: 0;
+    flex: 1;
+    min-width: 0;
+}
+
+/* ============================================================
+   ABOUT + CONTACT
+   ============================================================ */
+.vm-about-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vm-space-4);
+    max-width: 62ch;
+}
+
+.vm-about-copy p {
+    margin: 0;
+    font-size: var(--vm-text-body);
+    line-height: var(--vm-leading-body);
+    color: var(--vm-body-text);
+}
+
+.vm-about-copy p strong {
+    color: var(--vm-cream);
+    font-weight: 600;
+}
+
+.vm-text-link {
+    color: var(--vm-cream);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-color: var(--vm-accent);
+    font-weight: 600;
+}
+
+.vm-text-link:hover,
+.vm-text-link:focus-visible {
+    color: var(--vm-peach-italic);
+}
+
+.vm-contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--vm-space-3);
+    margin-top: var(--vm-space-5);
+}
+
+/* ============================================================
+   FOOTER (home shell)
+   ============================================================ */
+.vm-footer {
+    border-top: 1px solid var(--vm-line-hair);
+    background: var(--vm-footer-bg);
+    padding-block: var(--vm-space-6);
+}
+
+.vm-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--vm-space-4);
+}
+
+.vm-footer-copy {
+    margin: 0;
+    font-size: var(--vm-text-xs);
+    color: var(--vm-footer-muted);
+}
+
+.vm-footer .vm-socials a {
+    border-color: var(--vm-line-strong);
+}
+
+/* ============================================================
+   PAPERMOD INNER PAGES — keep them readable on the warm dark base
+   (non-home pages keep the PaperMod header/footer; no webfonts.)
+   ============================================================ */
+main.main,
+.post-content,
+.list-container {
+    color: var(--vm-cream);
+}
+
+/* ============================================================
+   MOTION — staggered hero entry + hovers (no-preference only)
+   ============================================================ */
+@keyframes vm-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+    .vm-hero-left .vm-eyebrow {
+        animation: vm-fade-up var(--vm-dur-slow) var(--vm-ease-out) 40ms backwards;
+    }
+
+    .vm-h1 {
+        animation: vm-fade-up var(--vm-dur-slow) var(--vm-ease-out) 110ms backwards;
+    }
+
+    .vm-lede {
+        animation: vm-fade-up var(--vm-dur-slow) var(--vm-ease-out) 180ms backwards;
+    }
+
+    .vm-pills {
+        animation: vm-fade-up var(--vm-dur-slow) var(--vm-ease-out) 250ms backwards;
+    }
+
+    .vm-stats {
+        animation: vm-fade-up var(--vm-dur-slow) var(--vm-ease-out) 320ms backwards;
+    }
+
+    .vm-ctas {
+        animation: vm-fade-up var(--vm-dur-slow) var(--vm-ease-out) 390ms backwards;
+    }
+
+    .vm-profile {
+        animation: vm-fade-up var(--vm-dur-slow) var(--vm-ease-out) 220ms backwards;
+    }
+
+    .vm-nav a {
+        transition: color var(--vm-dur-fast) var(--vm-ease-out);
+    }
+
+    .vm-nav a:hover,
+    .vm-nav a:focus-visible {
+        color: var(--vm-cream);
+    }
+
+    .vm-btn {
+        transition:
+            background-color var(--vm-dur-base) var(--vm-ease-out),
+            border-color var(--vm-dur-base) var(--vm-ease-out),
+            color var(--vm-dur-base) var(--vm-ease-out),
+            transform var(--vm-dur-base) var(--vm-ease-out);
+    }
+
+    .vm-btn--solid:hover,
+    .vm-btn--solid:focus-visible {
+        background: var(--vm-cta-solid-hover);
+    }
+
+    .vm-btn--ghost:hover,
+    .vm-btn--ghost:focus-visible {
+        border-color: var(--vm-cream);
+        background: var(--vm-ghost-hover-bg);
+    }
+
+    .vm-btn:active,
+    .vm-topbar-cta:active,
+    .vm-profile-cta:active {
+        transform: translateY(1px);
+    }
+
+    .vm-topbar-cta,
+    .vm-profile-cta {
+        transition:
+            background-color var(--vm-dur-base) var(--vm-ease-out),
+            transform var(--vm-dur-base) var(--vm-ease-out);
+    }
+
+    .vm-topbar-cta:hover,
+    .vm-topbar-cta:focus-visible {
+        background: var(--vm-cta-solid-hover);
+    }
+
+    .vm-profile-cta:hover,
+    .vm-profile-cta:focus-visible {
+        background: var(--vm-rust);
+    }
+
+    .vm-case,
+    .vm-exp-item {
+        transition:
+            border-color var(--vm-dur-base) var(--vm-ease-out),
+            transform var(--vm-dur-base) var(--vm-ease-out);
+    }
+
+    .vm-case:hover,
+    .vm-case:focus-within,
+    .vm-exp-item:hover {
+        border-color: var(--vm-card-line-strong);
+        transform: translateY(-2px);
+    }
+
+    .vm-case-cta span {
+        transition: transform var(--vm-dur-base) var(--vm-ease-out);
+    }
+
+    .vm-case-cta:hover span,
+    .vm-case-cta:focus-visible span {
+        transform: translateX(4px);
+    }
+
+    .vm-socials a {
+        transition:
+            transform var(--vm-dur-base) var(--vm-ease-out),
+            border-color var(--vm-dur-base) var(--vm-ease-out),
+            color var(--vm-dur-base) var(--vm-ease-out);
+    }
+
+    .vm-socials a:hover,
+    .vm-socials a:focus-visible {
+        transform: translateY(-2px);
+        border-color: var(--vm-accent);
+        color: var(--vm-peach-italic);
+    }
+
+    .vm-case-title a {
+        transition: color var(--vm-dur-fast) var(--vm-ease-out);
+    }
+
+    .vm-case-title a:hover,
+    .vm-case-title a:focus-visible {
+        color: var(--vm-card-accent);
+    }
+
+    .vm-case-tags a {
+        transition:
+            color var(--vm-dur-fast) var(--vm-ease-out),
+            border-color var(--vm-dur-fast) var(--vm-ease-out);
+    }
+
+    .vm-case-tags a:hover,
+    .vm-case-tags a:focus-visible {
+        color: var(--vm-card-ink);
+        border-color: var(--vm-accent);
+    }
+}
+
+/* ============================================================
+   THEME TOGGLE — home-shell button. Content pages use PaperMod's
+   own #theme-toggle (same localStorage "pref-theme" key); this
+   button exists only in the custom home header and is driven by
+   a 7-line delegated script in extend_head.html (no deps).
+   Moon shows in light (target: dark), sun in dark (target: light).
+   ============================================================ */
+.vm-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid var(--vm-line-strong);
+    border-radius: var(--vm-radius-pill);
+    background: transparent;
+    color: var(--vm-nav-text);
+    font-family: var(--vm-font-sans);
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        border-color var(--vm-dur-fast) var(--vm-ease-out),
+        color var(--vm-dur-fast) var(--vm-ease-out);
+}
+
+.vm-theme-toggle:hover,
+.vm-theme-toggle:focus-visible {
+    border-color: var(--vm-accent);
+    color: var(--vm-cream);
+}
+
+.vm-theme-toggle .vm-toggle-sun {
+    display: inline-flex;
+}
+
+.vm-theme-toggle .vm-toggle-moon {
+    display: none;
+}
+
+html[data-theme="light"] .vm-theme-toggle .vm-toggle-sun {
+    display: none;
+}
+
+html[data-theme="light"] .vm-theme-toggle .vm-toggle-moon {
+    display: inline-flex;
+}
+
+/* ============================================================
+   RESPONSIVE — 320 / 375 / 414 / 768
+   ============================================================ */
+@media (max-width: 900px) {
+    .vm-hero-grid {
+        grid-template-columns: 1fr;
+        gap: var(--vm-space-6);
+        padding-block: var(--vm-space-6);
+    }
+
+    .vm-profile {
+        position: static;
+        max-width: 360px;
+        justify-self: start;
+    }
+
+    .vm-cases {
+        grid-template-columns: 1fr;
+    }
+
+    .vm-exp {
+        grid-template-columns: 1fr;
+    }
+
+    .vm-h1 {
+        max-width: 20ch;
+    }
+}
+
+@media (max-width: 640px) {
+    .vm-hero {
+        min-height: auto;
+    }
+
+    .vm-ctas {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        max-width: 360px;
+    }
+
+    .vm-btn {
+        width: 100%;
+    }
+
+    .vm-stats {
+        max-width: none;
+    }
+
+    .vm-skill-group {
+        flex-direction: column;
+        gap: var(--vm-space-2);
+    }
+
+    .vm-skill-group dt {
+        flex: none;
+    }
+
+    .vm-footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 360px) {
+    .vm-logo-name {
+        font-size: var(--vm-text-xs);
+    }
+
+    .vm-topbar-cta {
+        display: none;
+        padding: 7px 11px;
+        font-size: var(--vm-text-2xs);
+    }
+
+    .vm-stats {
+        grid-template-columns: 1fr;
+    }
 }
