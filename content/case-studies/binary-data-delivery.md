@@ -6,8 +6,6 @@ tags: [data-delivery, retail-measurement, gcp]
 summary: "A case study about querying retail measurement data out of databases and delivering it as binary payloads through a delivery pipeline — filters, enrichments, and file handling at scale."
 ---
 
-# Binary data delivery for retail measurement
-
 ## The frame
 
 At NielsenIQ, the core job is taking retail measurement data — POS transactions, pricing, and analytics observations — and delivering it to downstream systems in a form they can consume quickly and cheaply. For many consumers that form is not a document or a report. It is a binary payload: compact, typed, and ready to load.

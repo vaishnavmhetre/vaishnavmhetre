@@ -6,8 +6,6 @@ tags: [migration, prediction, reliability]
 summary: "A case study about supervising the migration of prediction services — such as a pricing forecast backend — onto a shared delivery pipeline, and making them robust."
 ---
 
-# Migrating prediction services onto the delivery pipeline
-
 ## The frame
 
 Prediction services — such as a pricing forecast backend — need data to make predictions, and they need it on a schedule and shape they can rely on. Over time, a service can drift: it builds its own bespoke data path, its own retrieval logic, its own error handling. Each service doing this separately means each one is maintained separately, and each one fails separately.

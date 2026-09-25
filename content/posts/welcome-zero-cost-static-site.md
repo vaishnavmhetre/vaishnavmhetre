@@ -6,8 +6,6 @@ tags: [meta, hugo]
 summary: "A practical note on choosing GitHub Pages, GitHub Actions, and Hugo for a personal engineering site that stays inexpensive to run and easy to own."
 ---
 
-# Why I rebuilt this site as a static site
-
 I wanted a place for engineering notes that was cheap to keep online, easy to write in, and simple enough that I would still use it. I did not need a server, an admin panel, or a database. Those choices may make sense for some products, but they were unnecessary for a personal portfolio and blog.
 
 The site is a static site built with Hugo. The pages are generated ahead of time and hosted on GitHub Pages. GitHub Actions builds the same content whenever I push to the main branch, then publishes the generated site through the Pages deployment workflow.

@@ -6,8 +6,6 @@ tags: [ai, platform]
 summary: "A case study about engineering the data and delivery foundations that AI-driven initiatives depend on — reusing the pipeline, not rebuilding bespoke paths."
 ---
 
-# Foundations for AI-driven initiatives
-
 ## The frame
 
 AI-driven initiatives need the same thing every other data consumer needs: reliable, well-formed data, delivered on a schedule the model can depend on. The temptation when a new initiative appears is to build it a bespoke data path — "this is special, it needs its own pipe". My view is the opposite. An AI initiative that needs training data, features, or inference inputs should sit on the same delivery pipeline as everything else, inheriting its filters, enrichments, file handling, and reliability guarantees.
