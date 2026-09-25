@@ -568,6 +568,16 @@ body:has(.vm-shell) #content {
     flex: 1;
 }
 
+/* Desktop only: center the hero block in the stage, then nudge it ~5% up
+   so it reads comfortably above the fold instead of dead-center. Tune the
+   percentage to taste. */
+@media (min-width: 901px) {
+    .vm-hero-grid {
+        align-content: center;
+        transform: translateY(-5%);
+    }
+}
+
 .vm-hero-left {
     min-width: 0;
     display: flex;
