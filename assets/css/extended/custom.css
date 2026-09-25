@@ -101,10 +101,6 @@
     --vm-grad-glow: radial-gradient(ellipse 70% 55% at 50% 0%,
             var(--vm-glow) 0%,
             transparent 70%);
-    --vm-grad-monogram: linear-gradient(145deg,
-            var(--vm-accent-2) 0%,
-            #C05010 45%,
-            var(--vm-rust) 100%);
 
     /* Semantic aliases (PaperMod core vars kept functional site-wide) */
     --theme: var(--vm-espresso);
@@ -116,9 +112,10 @@
     --focus-ring: var(--vm-accent);
 
     /* THEME SEMANTICS — dark is the default palette. The page-level
-       tokens below flip under html[data-theme="light"]; the vm-card-*
-       tokens are surface-scoped and intentionally DO NOT flip (espresso
-       glass cards stay dark in both themes — the light/dark "duo"). */
+       tokens below flip under html[data-theme="light"]; the surface
+       tokens (vm-card-*, vm-btn-dark) flip too, and the stat duo
+       inverts (cream solid in dark, espresso solid in light) so the
+       "7+" card stays the prominent card in both themes. */
     --vm-page-bg: var(--vm-espresso);
     --vm-footer-bg: var(--vm-near-black);
     --vm-footer-muted: var(--vm-muted-70);
@@ -142,11 +139,12 @@
 
 /* ============================================================
    LIGHT THEME — warm ivory page, espresso ink, burnt-orange
-   accents. Dark glass cards (profile, stat--dark, cases, exp,
-   menu panel, badges) stay dark in both themes; only the
-   page-level surfaces flip. PaperMod's #theme-toggle sets
-   html[data-theme] (localStorage "pref-theme") — this block
-   re-themes the page-level tokens when it's light.
+   accents. Page-level AND surface tokens flip: glass cards
+   (profile, stat--dark, cases, exp, menu panel, badges) become
+   warm ivory glass on the ivory page, and the stat duo inverts
+   (7+ card = espresso solid) so it stays prominent. PaperMod's
+   #theme-toggle sets html[data-theme] (localStorage "pref-theme")
+   — this block re-themes the tokens when it's light.
    ============================================================ */
 html[data-theme="light"] {
     --vm-page-bg: #F4E9DA;
@@ -223,9 +221,9 @@ html[data-theme="light"] {
     --vm-btn-dark:           rgba(255, 247, 237, 0.92);
     --vm-btn-ink:            var(--vm-cream);
 
-    --vm-stat-light-bg:      rgba(255, 237, 218, 0.62);
-    --vm-stat-light-ink:     var(--vm-cream);
-    --vm-stat-light-label:   var(--vm-muted-70);
+    --vm-stat-light-bg:      #241005;                        /* espresso solid — "7+" pops on ivory */
+    --vm-stat-light-ink:     #FFF7ED;                        /* cream text on the espresso card */
+    --vm-stat-light-label:   rgba(255, 247, 237, 0.78);      /* cream label on the espresso card */
 }
 
 /* Mirrors the light block: PaperMod scopes its palette (incl. --theme:
@@ -798,38 +796,19 @@ body:has(.vm-shell) #content {
     line-height: 1;
 }
 
-/* Monogram block — stands in for the reference portrait (4:5, r12) */
-.vm-monogram {
-    position: relative;
-    aspect-ratio: 4 / 5;
+/* Portrait photo — real headshot (1:1, r12), replaces the monogram
+   stand-in. object-position keeps the face in frame in the square
+   crop. */
+.vm-portrait {
+    display: block;
     width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center 25%;
     border-radius: var(--vm-radius-img);
-    background: var(--vm-grad-monogram);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.vm-monogram::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 30% 20%,
-            rgba(255, 247, 237, 0.35) 0%,
-            transparent 60%);
-    pointer-events: none;
-}
-
-.vm-monogram-initials {
-    position: relative;
-    z-index: 1;
-    font-family: var(--vm-font-sans);
-    font-size: clamp(3rem, 6vw, 4rem);
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    color: var(--vm-card-ink);
-    text-shadow: 0 2px 18px rgba(18, 9, 4, 0.45);
+    border: 1px solid var(--vm-card-line-soft);
+    box-shadow: var(--vm-shadow-btn);
 }
 
 .vm-profile-name {

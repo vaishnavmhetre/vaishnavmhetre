@@ -95,18 +95,18 @@
                 </div>
             </div>
 
-            {{- /* Profile card: availability-style badge · 4:5 monogram (no
-                   portrait photo) · role line · real socials · GitHub button
-                   standing in for "Download my resume" (no resume file). */ -}}
+            {{- /* Profile card: availability-style badge · 1:1 portrait photo ·
+                   role line · real socials · GitHub button standing in for
+                   "Download my resume" (no resume file). */ -}}
             <aside class="vm-profile" aria-label="Profile">
                 <p class="vm-badge">
                     <span class="vm-badge-star" aria-hidden="true">★</span>
                     Open to platform &amp; data engineering work
                 </p>
 
-                <div class="vm-monogram" role="img" aria-label="VM monogram for Vaishnav Mhetre">
-                    <span class="vm-monogram-initials" aria-hidden="true">VM</span>
-                </div>
+                <img class="vm-portrait" src="{{ "images/profile.jpg" | relURL }}"
+                    alt="Portrait of Vaishnav Mhetre" width="746" height="746"
+                    fetchpriority="high" decoding="async">
 
                 <p class="vm-profile-name">{{ site.Title }}</p>
                 <p class="vm-profile-role">Platform Engineer &amp; Data Engineer</p>
